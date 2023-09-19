@@ -1,22 +1,25 @@
-import { connect } from './connect';
+import 'dotenv/config';
 import autoload from '@fastify/autoload';  
-
-// Import the framework and instantiate it
 import Fastify from 'fastify'
 import path from 'node:path';
+
+import { connect } from './connect';
+
 const fastify = Fastify({
   logger: true
 })
 
-// Declare a route
 fastify.get('/', async function handler (request, reply) {
   return { hello: 'world' }
 })
 
-// Run the server!
+fastify.setErrorHandler(function (error, request, reply) {
+  reply.status(400).send({error});
+})
+
 const start = async () => {
   try {
-    await fastify.listen({ port: 3001 })
+    await fastify.listen({ port: Number(process.env.SIRIUS_X_ATTENDANCE_PORT) || 3001 });
   } catch (err) {
     fastify.log.error(err)
     process.exit(1)
@@ -25,10 +28,11 @@ const start = async () => {
 
 start();
 
-const disconnectFromDB = connect();
+const getDisconnectFromDB = connect();
 
 const graceFulShutDown = async () => {
   await fastify.close();
+  const disconnectFromDB = await getDisconnectFromDB;
   await disconnectFromDB();
   process.exit(0);
 }

@@ -4,19 +4,24 @@
   "description": "",
   "main": "src/server.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "ts-node ."
+    "start": "ts-node .",
+    "build": "tsc",
+    "up:prod": "node dist/src/server",
+    "deploy:stop": "docker compose down --remove-orphans",
+    "deploy:start": "docker compose up -d",
+    "rebuild": "npm run deploy:stop && npm run deploy:start"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/node": "^20.6.2"
+    "@types/node": "^20.6.2",
+    "ts-node": "^10.9.1"
   },
   "dependencies": {
     "@fastify/autoload": "^5.7.1",
+    "dotenv": "^16.3.1",
     "fastify": "^4.23.2",
-    "mongoose": "^7.5.2",
-    "ts-node": "^10.9.1"
+    "mongoose": "^7.5.2"
   }
 }

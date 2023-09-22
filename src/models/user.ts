@@ -2,28 +2,38 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 
 const userSchema = new mongoose.Schema({
-  username: {
+  firstname: {
+    type: String,
+    required: true,
+  },
+  lastname: {
+    type: String,
+    required: true,
+  },
+  middlename: {
+    type: String
+  },
+  login: {
     type: String,
     unique: true,
     required: true,
   },
-  email: {
-    type: String,
-    unique: true,
-    required: true,
+  password_hash: {
+    type: String
   },
   password: {
-    type: String,
-    required: true,
-  },
+    type: String
+  }
 });
 
+// нужно проверить
 userSchema.pre('save', async function (next) {
   const user = this;
   if (user.isModified('password') || user.isNew) {
     try {
       const hashedPassword = await bcrypt.hash(user.password, 10);
-      user.password = hashedPassword;
+      user.password_hash = hashedPassword;
+      user.password = null;
       next();
     } catch (error) {
       return next(error);
@@ -41,4 +51,4 @@ userSchema.methods.comparePassword = async function (password: string) {
   }
 };
 
-module.exports = mongoose.model('User', userSchema);
+export default mongoose.model('User', userSchema);

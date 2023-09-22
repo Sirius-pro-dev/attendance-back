@@ -1,9 +1,9 @@
 import mongoose from 'mongoose';
 
 const attendanceSchema = new mongoose.Schema({
-  student: { type: mongoose.Schema.Types.ObjectId, ref: 'Student' },
   session: { type: mongoose.Schema.Types.ObjectId, ref: 'Session' },
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   dateTime: Date,
 });
 
-module.exports = mongoose.model('Attendance', attendanceSchema);
+export default mongoose.model('Attendance', attendanceSchema);

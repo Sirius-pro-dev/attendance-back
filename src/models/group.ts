@@ -2,7 +2,8 @@ import mongoose from 'mongoose';
 
 const groupSchema = new mongoose.Schema({
   name: String,
-  students: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Student' }],
+  sessions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Session' }],
+  users: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
 });
 
-module.exports = mongoose.model('Group', groupSchema);
+export default mongoose.model('Group', groupSchema);

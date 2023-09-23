@@ -22,8 +22,8 @@ const seed = async () => {
   });
   await user2.save();
   const user3 = new User({
-    firstname: 'Рындин',
-    lastname: 'Сергей',
+    firstname: 'Сергей',
+    lastname: 'Рындин',
     middlename: null,
     password: 'abc123',
     login: 'naziser',

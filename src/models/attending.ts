@@ -1,9 +1,9 @@
 import mongoose from 'mongoose';
 
-const attendanceSchema = new mongoose.Schema({
+const attendingSchema = new mongoose.Schema({
   session: { type: mongoose.Schema.Types.ObjectId, ref: 'Session' },
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  dateTime: Date,
+  joined_at: Date,
 });
 
-export default mongoose.model('Attendance', attendanceSchema);
+export default mongoose.model('Attending', attendingSchema);

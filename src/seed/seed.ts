@@ -1,7 +1,7 @@
 import Group from '../models/group'
 import User from '../models/user'
 import Session from '../models/session'
-import Attendance from '../models/attendance'
+import Attending from '../models/attending'
 import Role from '../models/role'
 
 const seed = async () => {
@@ -38,6 +38,7 @@ const seed = async () => {
   })
   await teacher.save();
   console.log('users are created')
+
 
   const student_role = new Role({
     title: 'Студент',
@@ -79,16 +80,17 @@ const seed = async () => {
   await session2.save();
   console.log('sessions are created')
 
-  const attendance1 =  new Attendance({
+
+  const attendance1 =  new Attending({
     session: session1,
     user: user1,
-    dateTime: new Date(2023, 9, 22, 18, 30, 10)
+    joined_at: new Date(2023, 9, 22, 18, 30, 10)
   });
   await attendance1.save();
-  const attendance2 =  new Attendance({
+  const attendance2 =  new Attending({
     session: session1,
     user: user2,
-    dateTime: new Date(2023, 9, 22, 18, 35, 21)
+    joined_at: new Date(2023, 9, 22, 18, 35, 21)
   });
   await attendance2.save();
   console.log('attendances are created')

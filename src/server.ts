@@ -32,6 +32,9 @@ start();
 
 const getDisconnectFromDB = connect();
 
+import seeds from './seed/seed'
+seeds()
+
 const graceFulShutDown = async () => {
   await fastify.close();
   const disconnectFromDB = await getDisconnectFromDB;

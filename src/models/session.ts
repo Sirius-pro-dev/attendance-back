@@ -5,7 +5,7 @@ const sessionSchema = new mongoose.Schema({
   timeFrom: Date,
   timeTo: Date,
   author: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Teacher' }],
-  group: { type: mongoose.Schema.Types.ObjectId, ref: 'Group' },
+  group: { type: mongoose.Schema.Types.ObjectId, ref: 'Group' }
 });
 
 export default mongoose.model('Session', sessionSchema);

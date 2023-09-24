@@ -5,8 +5,7 @@ export default async function (fastify) {
         reply.status(401).send({ error: 'Unauthorized' });
         return;
       }
-      const { first_name, last_name, middle_name, login, password } =
-        request.body;
+      const { first_name, last_name, middle_name, login, password } = request.body;
 
       reply.status(201).send({});
     } catch (error) {
@@ -34,8 +33,7 @@ export default async function (fastify) {
         return;
       }
       const userId = request.params.userID;
-      const { first_name, last_name, middle_name, login, password } =
-        request.body;
+      const { first_name, last_name, middle_name, login, password } = request.body;
 
       if (nameIsAlreadyInUse) {
         reply.status(409).send({ error: 'Name is already in use' });

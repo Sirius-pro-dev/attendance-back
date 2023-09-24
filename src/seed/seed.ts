@@ -10,7 +10,7 @@ const seed = async () => {
     lastname: 'Амантаев',
     middlename: 'Махмудович',
     password: 'qwerty',
-    login: 'artur',
+    login: 'artur'
   });
   await user1.save();
   const user2 = new User({
@@ -18,7 +18,7 @@ const seed = async () => {
     lastname: 'Усов',
     middlename: 'Андреевич',
     password: 'qwerty1',
-    login: 'daniel',
+    login: 'daniel'
   });
   await user2.save();
   const user3 = new User({
@@ -26,7 +26,7 @@ const seed = async () => {
     lastname: 'Рындин',
     middlename: null,
     password: 'abc123',
-    login: 'naziser',
+    login: 'naziser'
   });
   await user3.save();
   const teacher = new User({
@@ -34,7 +34,7 @@ const seed = async () => {
     lastname: 'Учитель',
     middlename: null,
     password: 'abc123',
-    login: 'valerian_floppa',
+    login: 'valerian_floppa'
   });
   await teacher.save();
   console.log('users are created');
@@ -42,20 +42,20 @@ const seed = async () => {
   const student_role = new Role({
     title: 'Студент',
     slug: 'student',
-    users: [user1, user2, user3],
+    users: [user1, user2, user3]
   });
   await student_role.save();
   const teacher_role = new Role({
     title: 'Преподаватель',
     slug: 'teacher',
-    users: [teacher],
+    users: [teacher]
   });
   await teacher_role.save();
   console.log('roles are created');
 
   const group = new Group({
     name: 'Л0711-21/1',
-    users: [user1, user2, user3],
+    users: [user1, user2, user3]
   });
   await group.save();
   console.log('groups are created');
@@ -65,7 +65,7 @@ const seed = async () => {
     timeFrom: new Date(2023, 9, 22, 18, 30, 0),
     timeTo: new Date(2023, 9, 22, 20, 0, 0),
     author: teacher,
-    group: group,
+    group: group
   });
   await session1.save();
   const session2 = new Session({
@@ -73,7 +73,7 @@ const seed = async () => {
     timeFrom: new Date(2023, 11, 1, 6, 30, 0),
     timeTo: new Date(2023, 11, 1, 9, 0, 0),
     author: teacher,
-    group: group,
+    group: group
   });
   await session2.save();
   console.log('sessions are created');
@@ -81,13 +81,13 @@ const seed = async () => {
   const attendance1 = new Attending({
     session: session1,
     user: user1,
-    joined_at: new Date(2023, 9, 22, 18, 30, 10),
+    joined_at: new Date(2023, 9, 22, 18, 30, 10)
   });
   await attendance1.save();
   const attendance2 = new Attending({
     session: session1,
     user: user2,
-    joined_at: new Date(2023, 9, 22, 18, 35, 21),
+    joined_at: new Date(2023, 9, 22, 18, 35, 21)
   });
   await attendance2.save();
   console.log('attendances are created');

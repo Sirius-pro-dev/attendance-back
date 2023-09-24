@@ -9,7 +9,9 @@
     "up:prod": "node dist/src/server",
     "deploy:stop": "docker compose down --remove-orphans",
     "deploy:start": "docker compose up -d",
-    "rebuild": "npm run deploy:stop && npm run deploy:start"
+    "rebuild": "npm run deploy:stop && npm run deploy:start",
+    "lint": "eslint .",
+    "format": "prettier --write 'src/**/*.{ts,md,json}' --config ./.prettierrc"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +19,11 @@
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
     "@types/node": "^20.6.2",
+    "@typescript-eslint/eslint-plugin": "^6.7.2",
+    "@typescript-eslint/parser": "^6.7.2",
+    "eslint": "^8.50.0",
+    "eslint-plugin-node": "^11.1.0",
+    "prettier": "3.0.3",
     "ts-node": "^10.9.1"
   },
   "dependencies": {

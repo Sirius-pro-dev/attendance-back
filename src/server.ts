@@ -6,7 +6,7 @@ import path from 'node:path';
 import { connect } from './connect';
 
 const fastify = Fastify({
-  logger: true,
+  logger: true
 });
 
 fastify.get('/', async function handler(request, reply) {
@@ -20,7 +20,7 @@ fastify.setErrorHandler(function (error, request, reply) {
 const start = async () => {
   try {
     await fastify.listen({
-      port: Number(process.env.SIRIUS_X_ATTENDANCE_PORT) || 3001,
+      port: Number(process.env.SIRIUS_X_ATTENDANCE_PORT) || 3001
     });
   } catch (err) {
     fastify.log.error(err);
@@ -32,8 +32,8 @@ start();
 
 const getDisconnectFromDB = connect();
 
-import seeds from './seed/seed'
-seeds()
+import seeds from './seed/seed';
+seeds();
 
 const graceFulShutDown = async () => {
   await fastify.close();
@@ -46,5 +46,5 @@ process.on('SIGINT', graceFulShutDown);
 process.on('SIGTERM', graceFulShutDown);
 
 fastify.register(autoload, {
-  dir: path.join(__dirname, 'routes'),
+  dir: path.join(__dirname, 'routes')
 });

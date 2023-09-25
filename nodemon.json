@@ -1,0 +1,8 @@
+{
+  "watch": ["src"],
+  "ext": "ts,json",
+  "verbose": true,
+  "execMap": {
+    "ts": "node -r ts-node/register"
+  }
+}

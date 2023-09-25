@@ -3,11 +3,13 @@ import autoload from '@fastify/autoload';
 import Fastify from 'fastify';
 import path from 'node:path';
 
+import seeds from './seed/seed';
 import { connect } from './connect';
+import { loggerConfig } from './configs/logger';
 
 const fastify = Fastify({
-  logger: true
-});
+  logger: loggerConfig[process.env.SIRIUS_X_ATTENDANCE_PROJECT_STATUS] ?? true
+}); 
 
 fastify.get('/', async function handler(request, reply) {
   return { hello: 'world' };
@@ -30,10 +32,9 @@ const start = async () => {
 
 start();
 
-const getDisconnectFromDB = connect();
+const getDisconnectFromDB = connect(fastify);
 
-import seeds from './seed/seed';
-seeds();
+seeds(fastify);
 
 const graceFulShutDown = async () => {
   await fastify.close();

@@ -4,7 +4,7 @@ import Session from '../models/session';
 import Attending from '../models/attending';
 import Role from '../models/role';
 
-const seed = async () => {
+const seed = async fastify => {
   const user1 = new User({
     firstname: 'Артур',
     lastname: 'Амантаев',
@@ -37,7 +37,7 @@ const seed = async () => {
     login: 'valerian_floppa'
   });
   await teacher.save();
-  console.log('users are created');
+  fastify.log.info('users are created');
 
   const student_role = new Role({
     title: 'Студент',
@@ -51,14 +51,14 @@ const seed = async () => {
     users: [teacher]
   });
   await teacher_role.save();
-  console.log('roles are created');
+  fastify.log.info('roles are created');
 
   const group = new Group({
     name: 'Л0711-21/1',
     users: [user1, user2, user3]
   });
   await group.save();
-  console.log('groups are created');
+  fastify.log.info('groups are created');
 
   const session1 = new Session({
     title: 'JS разработка',
@@ -76,7 +76,7 @@ const seed = async () => {
     group: group
   });
   await session2.save();
-  console.log('sessions are created');
+  fastify.log.info('sessions are created');
 
   const attendance1 = new Attending({
     session: session1,
@@ -90,7 +90,7 @@ const seed = async () => {
     joined_at: new Date(2023, 9, 22, 18, 35, 21)
   });
   await attendance2.save();
-  console.log('attendances are created');
+  fastify.log.info('attendances are created');
 };
 
 export default seed;

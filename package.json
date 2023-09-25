@@ -7,6 +7,7 @@
     "start": "ts-node .",
     "build": "tsc",
     "up:prod": "node dist/src/server",
+    "up:dev": "nodemon",
     "deploy:stop": "docker compose down --remove-orphans",
     "deploy:start": "docker compose up -d",
     "rebuild": "npm run deploy:stop && npm run deploy:start",
@@ -23,6 +24,9 @@
     "@typescript-eslint/parser": "^6.7.2",
     "eslint": "^8.50.0",
     "eslint-plugin-node": "^11.1.0",
+    "nodemon": "^3.0.1",
+    "pino": "^8.15.1",
+    "pino-pretty": "^10.2.0",
     "prettier": "3.0.3",
     "ts-node": "^10.9.1"
   },

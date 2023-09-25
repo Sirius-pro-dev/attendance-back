@@ -8,6 +8,7 @@ export default async function (fastify) {
 
       reply.status(200).send([{}]);
     } catch (error) {
+      fastify.log.error(error);
       reply.status(500).send({ error: 'Internal Server Error' });
     }
   });

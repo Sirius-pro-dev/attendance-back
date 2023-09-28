@@ -1,61 +1,80 @@
+import { createUser, getUserById, updateUserById, deleteUserById } from '../../controllers/userController';
+
 export default async function (fastify) {
   fastify.post('/', (request, reply) => {
     try {
-      if (!request.isAuthenticated) {
-        reply.status(401).send({ error: 'Unauthorized' });
-        return;
-      }
-      const { first_name, last_name, middle_name, login, password } = request.body;
-
-      reply.status(201).send({});
+      // if (!request.isAuthenticated) {
+      //   reply.status(401).send({ error: 'Unauthorized' });
+      //   return;
+      // }
+      createUser(request.body);
+      reply.status(201).send({message: 'Created'});
     } catch (error) {
       fastify.log.error(error);
       reply.status(500).send({ error: 'Internal Server Error' });
     }
   });
-  fastify.get('/:userID', (request, reply) => {
+  fastify.get('/:id', async (request, reply) => {
     try {
-      if (!request.isAuthenticated) {
-        reply.status(401).send({ error: 'Unauthorized' });
+      // if (!request.isAuthenticated) {
+      //   reply.status(401).send({ error: 'Unauthorized' });
+      //   return;
+      // }
+      const userId = request.query.id;
+      const user = await getUserById(userId);
+
+      if (!user) {
+        reply.status(404).send({ error: 'User not found' });
         return;
       }
-      const userId = request.params.userID;
 
-      reply.status(200).send({});
+      reply.status(200).send(user);
     } catch (error) {
       fastify.log.error(error);
       reply.status(500).send({ error: 'Internal Server Error' });
     }
   });
-  fastify.put('/:userID', (request, reply) => {
+  fastify.put('/:id', async (request, reply) => {
     try {
-      const nameIsAlreadyInUse = false;
-      if (!request.isAuthenticated) {
-        reply.status(401).send({ error: 'Unauthorized' });
+      // const nameIsAlreadyInUse = false;
+      // if (!request.isAuthenticated) {
+      //   reply.status(401).send({ error: 'Unauthorized' });
+      //   return;
+      // }
+      const userId = request.query.id;
+      const userBody = request.body;
+      const updatedUser = await updateUserById(userId, userBody)
+
+      if (!updatedUser) {
+        reply.status(404).send({ error: 'User not found' });
         return;
       }
-      const userId = request.params.userID;
-      const { first_name, last_name, middle_name, login, password } = request.body;
 
-      if (nameIsAlreadyInUse) {
-        reply.status(409).send({ error: 'Name is already in use' });
-      }
+      // if (nameIsAlreadyInUse) {
+      //   reply.status(409).send({ error: 'Name is already in use' });
+      // }
 
-      reply.status(200).send({});
+      reply.status(200).send(updatedUser);
     } catch (error) {
       fastify.log.error(error);
       reply.status(500).send({ error: 'Internal Server Error' });
     }
   });
-  fastify.delete('/:userID', (request, reply) => {
+  fastify.delete('/:id', async (request, reply) => {
     try {
-      if (!request.isAuthenticated) {
-        reply.status(401).send({ error: 'Unauthorized' });
+      // if (!request.isAuthenticated) {
+      //   reply.status(401).send({ error: 'Unauthorized' });
+      //   return;
+      // }
+      const userId = request.query.id;
+      const deletedUser = await deleteUserById(userId);
+
+      if (!deletedUser) {
+        reply.status(404).send({ error: 'User not found' });
         return;
       }
-      const userId = request.params.userID;
 
-      reply.status(204).send({});
+      reply.status(200).send({message: 'Deleted'});
     } catch (error) {
       fastify.log.error(error);
       reply.status(500).send({ error: 'Internal Server Error' });

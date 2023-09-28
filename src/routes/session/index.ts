@@ -1,61 +1,80 @@
+import { createSession, getSessionById, updateSessionById, deleteSessionById } from '../../controllers/sessionController';
+
 export default async function (fastify) {
   fastify.post('/', (request, reply) => {
     try {
-      if (!request.isAuthenticated) {
-        reply.status(401).send({ error: 'Unauthorized' });
-        return;
-      }
-      const { title, timeFrom, timeTo, authorID, groupsID } = request.body;
-
-      reply.status(201).send({});
+      // if (!request.isAuthenticated) {
+      //   reply.status(401).send({ error: 'Unauthorized' });
+      //   return;
+      // }
+      createSession(request.body);
+      reply.status(201).send({message: 'Created'});
     } catch (error) {
       fastify.log.error(error);
       reply.status(500).send({ error: 'Internal Server Error' });
     }
   });
-  fastify.get('/:sessionId', (request, reply) => {
+  fastify.get('/:id', async (request, reply) => {
     try {
-      if (!request.isAuthenticated) {
-        reply.status(401).send({ error: 'Unauthorized' });
+      // if (!request.isAuthenticated) {
+      //   reply.status(401).send({ error: 'Unauthorized' });
+      //   return;
+      // }
+      const sessionId = request.query.id;
+      const session = await getSessionById(sessionId);
+
+      if (!session) {
+        reply.status(404).send({ error: 'Session not found' });
         return;
       }
-      const sessionId = request.params.sessionId;
 
-      reply.status(200).send({});
+      reply.status(200).send(session);
     } catch (error) {
       fastify.log.error(error);
       reply.status(500).send({ error: 'Internal Server Error' });
     }
   });
-  fastify.put('/:sessionId', (request, reply) => {
+  fastify.put('/:id', async (request, reply) => {
     try {
-      const nameIsAlreadyInUse = false;
-      if (!request.isAuthenticated) {
-        reply.status(401).send({ error: 'Unauthorized' });
+      // const nameIsAlreadyInUse = false;
+      // if (!request.isAuthenticated) {
+      //   reply.status(401).send({ error: 'Unauthorized' });
+      //   return;
+      // }
+      const sessionId = request.query.id;
+      const sessionBody = request.body;
+      const updatedSession = await updateSessionById(sessionId, sessionBody)
+
+      if (!updatedSession) {
+        reply.status(404).send({ error: 'Session not found' });
         return;
       }
-      const sessionId = request.params.sessionId;
-      const { title, timeFrom, timeTo, authorID, groupsID } = request.body;
 
-      if (nameIsAlreadyInUse) {
-        reply.status(409).send({ error: 'Name is already in use' });
-      }
+      // if (nameIsAlreadyInUse) {
+      //   reply.status(409).send({ error: 'Name is already in use' });
+      // }
 
-      reply.status(200).send({});
+      reply.status(200).send(updatedSession);
     } catch (error) {
       fastify.log.error(error);
       reply.status(500).send({ error: 'Internal Server Error' });
     }
   });
-  fastify.delete('/:sessionId', (request, reply) => {
+  fastify.delete('/:id', async (request, reply) => {
     try {
-      if (!request.isAuthenticated) {
-        reply.status(401).send({ error: 'Unauthorized' });
+      // if (!request.isAuthenticated) {
+      //   reply.status(401).send({ error: 'Unauthorized' });
+      //   return;
+      // }
+      const sessionId = request.query.id;
+      const deletedSession = await deleteSessionById(sessionId);
+
+      if (!deletedSession) {
+        reply.status(404).send({ error: 'Session not found' });
         return;
       }
-      const sessionId = request.params.sessionId;
 
-      reply.status(204).send({});
+      reply.status(200).send({message: 'Deleted'});
     } catch (error) {
       fastify.log.error(error);
       reply.status(500).send({ error: 'Internal Server Error' });

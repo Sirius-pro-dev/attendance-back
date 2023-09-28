@@ -53,6 +53,8 @@ const seed = async fastify => {
   await teacher_role.save();
   fastify.log.info('roles are created');
 
+  
+
   const group = new Group({
     name: 'Л0711-21/1',
     users: [user1, user2, user3]

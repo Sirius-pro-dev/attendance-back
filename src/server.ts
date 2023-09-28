@@ -1,15 +1,24 @@
 import 'dotenv/config';
 import autoload from '@fastify/autoload';
+import fastifyJwt from '@fastify/jwt';
 import Fastify from 'fastify';
 import path from 'node:path';
 
 import seeds from './seed/seed';
 import { connect } from './connect';
 import { loggerConfig } from './configs/logger';
+import { authenticationConfig } from './configs/authentication';
 
 const fastify = Fastify({
   logger: loggerConfig[process.env.SIRIUS_X_ATTENDANCE_PROJECT_STATUS] ?? true
-}); 
+});
+
+fastify.register(fastifyJwt, {
+  secret: authenticationConfig.secretKey,
+  sign: {
+    expiresIn: authenticationConfig.expiresIn
+  }
+});
 
 fastify.get('/', async function handler(request, reply) {
   return { hello: 'world' };

@@ -1,4 +1,9 @@
-import { createSession, getSessionById, updateSessionById, deleteSessionById } from '../../controllers/sessionController';
+import {
+  createSession,
+  getSessionById,
+  updateSessionById,
+  deleteSessionById
+} from '../../controllers/sessionController';
 
 export default async function (fastify) {
   fastify.post('/', (request, reply) => {
@@ -8,7 +13,7 @@ export default async function (fastify) {
       //   return;
       // }
       createSession(request.body);
-      reply.status(201).send({message: 'Created'});
+      reply.status(201).send({ message: 'Created' });
     } catch (error) {
       fastify.log.error(error);
       reply.status(500).send({ error: 'Internal Server Error' });
@@ -43,7 +48,7 @@ export default async function (fastify) {
       // }
       const sessionId = request.query.id;
       const sessionBody = request.body;
-      const updatedSession = await updateSessionById(sessionId, sessionBody)
+      const updatedSession = await updateSessionById(sessionId, sessionBody);
 
       if (!updatedSession) {
         reply.status(404).send({ error: 'Session not found' });
@@ -74,7 +79,7 @@ export default async function (fastify) {
         return;
       }
 
-      reply.status(200).send({message: 'Deleted'});
+      reply.status(200).send({ message: 'Deleted' });
     } catch (error) {
       fastify.log.error(error);
       reply.status(500).send({ error: 'Internal Server Error' });

@@ -27,6 +27,9 @@ const userSchema = new mongoose.Schema({
   refreshToken: {
     type: String,
     default: null
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    default: new mongoose.Types.ObjectId()
   }
 });
 

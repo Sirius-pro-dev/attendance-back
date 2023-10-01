@@ -1,14 +1,13 @@
-const register = fastify => {};
+import User from '../models/user';
 
-const login = fastify => {};
+// const register = fastify => {
+//   const newUser = new User({ username, password });
+//   const refreshToken = app.jwt.sign({ username }, { expiresIn: refreshExpiresIn });
+//   newUser.refreshToken = refreshToken;
+
+//   await newUser.save();
+// };
+
+const email = fastify => {};
 
 const refresh = fastify => {};
-
-// const newUser = new UserModel({ username, password });
-// const refreshToken = app.jwt.sign({ username }, { expiresIn: refreshExpiresIn });
-// newUser.refreshToken = refreshToken;
-
-// await newUser.save();
-
-// // Создаем access-токен
-// const accessToken = app.jwt.sign({ username }, { expiresIn });

@@ -1,6 +1,18 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 
+type UserType = Document & {
+  firstname: string;
+  lastname: string;
+  middlename?: string;
+  email: string;
+  password_hash?: string;
+  password?: string;
+  refreshToken: string | null;
+  userId: mongoose.Types.ObjectId;
+  comparePassword(password: string): Promise<boolean>;
+};
+
 const userSchema = new mongoose.Schema({
   firstname: {
     type: String,
@@ -13,7 +25,7 @@ const userSchema = new mongoose.Schema({
   middlename: {
     type: String
   },
-  login: {
+  email: {
     type: String,
     unique: true,
     required: true
@@ -27,20 +39,19 @@ const userSchema = new mongoose.Schema({
   refreshToken: {
     type: String,
     default: null
+  },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     default: new mongoose.Types.ObjectId()
   }
 });
 
-// нужно проверить
 userSchema.pre('save', async function (next) {
-  const user = this;
-  if (user.isModified('password') || user.isNew) {
+  if (this.isModified('password') || this.isNew) {
     try {
-      const hashedPassword = await bcrypt.hash(user.password, 10);
-      user.password_hash = hashedPassword;
-      user.password = null;
+      const hashedPassword = await bcrypt.hash(this.password, 10);
+      this.password_hash = hashedPassword;
+      this.password = null;
       next();
     } catch (error) {
       return next(error);
@@ -51,11 +62,8 @@ userSchema.pre('save', async function (next) {
 });
 
 userSchema.methods.comparePassword = async function (password: string) {
-  try {
-    return await bcrypt.compare(password, this.password);
-  } catch (error) {
-    throw error;
-  }
+  const hashpassword = await bcrypt.hash(password, 10);
+  return await bcrypt.compare(hashpassword, this.password_hash);
 };
 
-export default mongoose.model('User', userSchema);
+export default mongoose.model<UserType>('User', userSchema);

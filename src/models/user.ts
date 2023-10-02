@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 
-type UserType = Document & {
+export type UserType = Document & {
   firstname: string;
   lastname: string;
   middlename?: string;
@@ -62,8 +62,7 @@ userSchema.pre('save', async function (next) {
 });
 
 userSchema.methods.comparePassword = async function (password: string) {
-  const hashpassword = await bcrypt.hash(password, 10);
-  return await bcrypt.compare(hashpassword, this.password_hash);
+  return await bcrypt.compare(password, this.password_hash);
 };
 
 export default mongoose.model<UserType>('User', userSchema);

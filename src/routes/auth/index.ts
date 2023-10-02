@@ -1,4 +1,10 @@
 import { authenticationConfig } from '../../configs/authentication';
+import {
+  generateAccessToken,
+  generateAuthenticationTokens,
+  generateRefreshToken,
+  login
+} from '../../controllers/authController';
 import { createUser } from '../../controllers/userController';
 import User from '../../models/user';
 
@@ -7,16 +13,15 @@ export default async function (fastify) {
     try {
       const { email, lastname, firstname, middlename, password } = request.body;
       // TODO: механизм проверки уникальности полей
+      const newUser = await createUser({ email, lastname, firstname, middlename, password });
+      const newAuthenticationTokens = await generateAuthenticationTokens(newUser, fastify);
 
-      const newUser = new User({ email, lastname, firstname, middlename, password });
-      const refreshToken = fastify.jwt.sign({ email }, { refreshExpiresIn: authenticationConfig.refreshExpiresIn });
-      newUser.refreshToken = refreshToken;
-      await newUser.save();
-
-      const accessToken = fastify.jwt.sign({ userId: newUser.userId }, { expiresIn: authenticationConfig.expiresIn });
-      reply
-        .status(200)
-        .send({ accessToken, userId: newUser.userId, expiresIn: authenticationConfig.expiresIn, refreshToken });
+      reply.status(200).send({
+        newAccessToken: newAuthenticationTokens.newAccessToken,
+        newRefreshToken: newAuthenticationTokens.newRefreshToken,
+        accessExpiresIn: authenticationConfig.accessExpiresIn,
+        refreshExpiresIn: authenticationConfig.refreshExpiresIn
+      });
     } catch (error) {
       fastify.log.error(error);
       reply.status(500).send({ error: 'Internal Server Error' });
@@ -26,30 +31,21 @@ export default async function (fastify) {
   fastify.post('/login', async (request, reply) => {
     try {
       const { email, password } = request.body;
+      const lognResult = await login({ email, password }, fastify);
 
-      const user = await User.findOne({ email });
-
-      const isPasswordValid = await user.comparePassword(password);
-      if (!user) {
-        reply.status(401).send({ error: 'Пользователя с таким email не найдено' });
+      if (!lognResult.status) {
+        reply.status(401).send({ error: lognResult.message });
         return;
       }
 
-      if (isPasswordValid) {
-        reply.status(401).send({ error: 'Неверный пароль' });
-        return;
-      }
+      const newAuthenticationTokens = await generateAuthenticationTokens(lognResult.user, fastify);
 
-      const refreshToken = fastify.jwt.sign(
-        { userId: user.userId },
-        { refreshExpiresIn: authenticationConfig.refreshExpiresIn }
-      );
-      user.refreshToken = refreshToken;
-      await user.save();
-
-      const accessToken = fastify.jwt.sign({ userId: user.userId }, { expiresIn: authenticationConfig.expiresIn });
-
-      reply.status(200).send({ accessToken, refreshToken });
+      reply.status(200).send({
+        newAccessToken: newAuthenticationTokens.newAccessToken,
+        newRefreshToken: newAuthenticationTokens.newRefreshToken,
+        accessExpiresIn: authenticationConfig.accessExpiresIn,
+        refreshExpiresIn: authenticationConfig.refreshExpiresIn
+      });
     } catch (error) {
       fastify.log.error(error);
       reply.status(500).send({ error: 'Internal Server Error' });
@@ -58,8 +54,7 @@ export default async function (fastify) {
 
   fastify.post('/refresh', async (request, reply) => {
     try {
-      const { refreshToken } = request.body;
-
+      const refreshToken = request.headers.authorization;
       const user = await User.findOne({ refreshToken });
 
       if (!user) {
@@ -67,9 +62,10 @@ export default async function (fastify) {
         return;
       }
 
-      const accessToken = fastify.jwt.sign({ userId: user.userId }, { expiresIn: authenticationConfig.expiresIn });
+      await generateRefreshToken(user, fastify);
+      const newAccessToken = generateAccessToken(user, fastify);
 
-      reply.status(200).send({ accessToken });
+      reply.status(200).send({ newAccessToken });
     } catch (error) {
       fastify.log.error(error);
       reply.status(500).send({ error: 'Internal Server Error' });

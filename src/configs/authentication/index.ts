@@ -1,5 +1,6 @@
 export const authenticationConfig = {
-  secretKey: 'your-secret-key',
-  expiresIn: '1d',
-  refreshExpiresIn: '7d'
+  secretKey: process.env.SIRIUS_X_ATTENDANCE_SECRET_KEY || 'secret-key',
+  accessExpiresIn: '1d',
+  refreshExpiresIn: '7d',
+  excludedRoutes: ['/auth/register', '/auth/login']
 };

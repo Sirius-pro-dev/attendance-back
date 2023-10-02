@@ -1,12 +1,25 @@
-import { createSession, getSessionById, updateSessionById, deleteSessionById } from '../../controllers/sessionController';
+import { createSession, getSessionById, updateSessionById, deleteSessionById, validateSessionData, isTitleAlreadyInUse } from '../../controllers/sessionController';
 
 export default async function (fastify) {
-  fastify.post('/', (request, reply) => {
+  fastify.post('/', async (request, reply) => {
     try {
       // if (!request.isAuthenticated) {
       //   reply.status(401).send({ error: 'Unauthorized' });
       //   return;
       // }
+      const validationErrors = validateSessionData(request.body);
+      const isTitleTaken = await isTitleAlreadyInUse(request.body.title);
+
+      if (validationErrors) {
+        reply.status(400).send({ error: 'Invalid Data', details: validationErrors });
+        return;
+      }
+
+      if (isTitleTaken) {
+        reply.status(409).send({ error: 'Title is already in use' });
+        return;
+      }
+
       createSession(request.body);
       reply.status(201).send({message: 'Created'});
     } catch (error) {
@@ -44,6 +57,18 @@ export default async function (fastify) {
       const sessionId = request.query.id;
       const sessionBody = request.body;
       const updatedSession = await updateSessionById(sessionId, sessionBody)
+      const validationErrors = validateSessionData(sessionBody);
+      const isTitleTaken = await isTitleAlreadyInUse(request.body.title);
+
+      if (validationErrors) {
+        reply.status(400).send({ error: 'Invalid Data', details: validationErrors });
+        return;
+      }
+
+      if (isTitleTaken) {
+        reply.status(409).send({ error: 'Title is already in use' });
+        return;
+      }
 
       if (!updatedSession) {
         reply.status(404).send({ error: 'Session not found' });

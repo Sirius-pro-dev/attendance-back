@@ -54,7 +54,7 @@ export default async function (fastify) {
 
   fastify.post('/refresh', async (request, reply) => {
     try {
-      const refreshToken = request.headers.authorization;
+      const refreshToken = request.headers.refreshToken;
       const user = await User.findOne({ refreshToken });
 
       if (!user) {

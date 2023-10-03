@@ -9,7 +9,7 @@ import { loggerConfig } from './configs/logger';
 
 const fastify = Fastify({
   logger: loggerConfig[process.env.SIRIUS_X_ATTENDANCE_PROJECT_STATUS] ?? true
-}); 
+});
 
 fastify.get('/', async function handler(request, reply) {
   return { hello: 'world' };

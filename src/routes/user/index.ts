@@ -8,7 +8,7 @@ export default async function (fastify) {
       //   return;
       // }
       createUser(request.body);
-      reply.status(201).send({message: 'Created'});
+      reply.status(201).send({ message: 'Created' });
     } catch (error) {
       fastify.log.error(error);
       reply.status(500).send({ error: 'Internal Server Error' });
@@ -43,7 +43,7 @@ export default async function (fastify) {
       // }
       const userId = request.query.id;
       const userBody = request.body;
-      const updatedUser = await updateUserById(userId, userBody)
+      const updatedUser = await updateUserById(userId, userBody);
 
       if (!updatedUser) {
         reply.status(404).send({ error: 'User not found' });
@@ -74,7 +74,7 @@ export default async function (fastify) {
         return;
       }
 
-      reply.status(200).send({message: 'Deleted'});
+      reply.status(200).send({ message: 'Deleted' });
     } catch (error) {
       fastify.log.error(error);
       reply.status(500).send({ error: 'Internal Server Error' });

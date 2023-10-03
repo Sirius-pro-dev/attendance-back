@@ -7,11 +7,11 @@ export const createUser = async data => {
 };
 
 export const getAllUsers = async () => {
-  return await User.find();
+  return await User.find({}, { _id: 0, __v: 0 });
 };
 
 export const getUserById = async id => {
-  return await User.findById(id);
+  return await User.findById(id, { _id: 0, __v: 0 });
 };
 
 export const updateUserById = async (id, body) => {

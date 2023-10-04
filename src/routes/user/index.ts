@@ -3,10 +3,6 @@ import { createUser, getUserById, updateUserById, deleteUserById } from '../../c
 export default async function (fastify) {
   fastify.post('/', (request, reply) => {
     try {
-      // if (!request.isAuthenticated) {
-      //   reply.status(401).send({ error: 'Unauthorized' });
-      //   return;
-      // }
       createUser(request.body);
       reply.status(201).send({ message: 'Created' });
     } catch (error) {
@@ -16,10 +12,6 @@ export default async function (fastify) {
   });
   fastify.get('/:id', async (request, reply) => {
     try {
-      // if (!request.isAuthenticated) {
-      //   reply.status(401).send({ error: 'Unauthorized' });
-      //   return;
-      // }
       const userId = request.query.id;
       const user = await getUserById(userId);
 
@@ -37,10 +29,7 @@ export default async function (fastify) {
   fastify.put('/:id', async (request, reply) => {
     try {
       // const nameIsAlreadyInUse = false;
-      // if (!request.isAuthenticated) {
-      //   reply.status(401).send({ error: 'Unauthorized' });
-      //   return;
-      // }
+
       const userId = request.query.id;
       const userBody = request.body;
       const updatedUser = await updateUserById(userId, userBody);
@@ -62,10 +51,6 @@ export default async function (fastify) {
   });
   fastify.delete('/:id', async (request, reply) => {
     try {
-      // if (!request.isAuthenticated) {
-      //   reply.status(401).send({ error: 'Unauthorized' });
-      //   return;
-      // }
       const userId = request.query.id;
       const deletedUser = await deleteUserById(userId);
 

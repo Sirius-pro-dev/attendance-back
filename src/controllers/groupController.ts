@@ -6,24 +6,30 @@ type Group = {
   users?: string,
 };
 
-export const createGroup = async (data) => {
+type Group = {
+  name?: string,
+  sessions?: string,
+  users?: string,
+};
+
+export const createGroup = async data => {
   const newGroup = new Group(data);
   return await newGroup.save();
 };
-  
+
 export const getAllGroup = async () => {
-  return await Group.find();
+  return await Group.find({}, { _id: 0, __v: 0 });
 };
-  
-export const getGroupById = async (id) => {
-  return await Group.findById(id);
+
+export const getGroupById = async id => {
+  return await Group.findById(id, { _id: 0, __v: 0 });
 };
-  
+
 export const updateGroupById = async (id, body) => {
   return await Group.findByIdAndUpdate(id, body, { new: true });
 };
-  
-export const deleteGroupById = async (id) => {
+
+export const deleteGroupById = async id => {
   return await Group.findByIdAndRemove(id);
 };
 

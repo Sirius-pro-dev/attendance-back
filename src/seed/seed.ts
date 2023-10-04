@@ -12,7 +12,7 @@ const seed = async fastify => {
       lastname: 'Амантаев',
       middlename: 'Махмудович',
       password: 'qwerty',
-      login: 'artur'
+      email: 'artur'
     });
     await user1.save();
     const user2 = new User({
@@ -20,7 +20,7 @@ const seed = async fastify => {
       lastname: 'Усов',
       middlename: 'Андреевич',
       password: 'qwerty1',
-      login: 'daniel'
+      email: 'daniel'
     });
     await user2.save();
     const user3 = new User({
@@ -28,7 +28,7 @@ const seed = async fastify => {
       lastname: 'Рындин',
       middlename: null,
       password: 'abc123',
-      login: 'naziser'
+      email: 'naziser'
     });
     await user3.save();
     const teacher = new User({
@@ -36,7 +36,7 @@ const seed = async fastify => {
       lastname: 'Учитель',
       middlename: null,
       password: 'abc123',
-      login: 'valerian_floppa'
+      email: 'valerian_floppa'
     });
     await teacher.save();
     fastify.log.info('users are created');

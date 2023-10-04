@@ -21,7 +21,7 @@ export default async function (fastify) {
       }
 
       createGroup(request.body);
-      reply.status(201).send({message: 'Created'});
+      reply.status(201).send({ message: 'Created' });
     } catch (error) {
       fastify.log.error(error);
       reply.status(500).send({ error: 'Internal Server Error' });
@@ -29,10 +29,6 @@ export default async function (fastify) {
   });
   fastify.get('/:id', async (request, reply) => {
     try {
-      // if (!request.isAuthenticated) {
-      //   reply.status(401).send({ error: 'Unauthorized' });
-      //   return;
-      // }
       const groupId = request.query.id;
       const group = await getGroupById(groupId);
 
@@ -82,10 +78,6 @@ export default async function (fastify) {
   });
   fastify.delete('/:id', async (request, reply) => {
     try {
-      // if (!request.isAuthenticated) {
-      //   reply.status(401).send({ error: 'Unauthorized' });
-      //   return;
-      // }
       const groupId = request.query.id;
       const deletedGroup = await deleteGroupById(groupId);
 
@@ -94,7 +86,7 @@ export default async function (fastify) {
         return;
       }
 
-      reply.status(200).send({message: 'Deleted'});
+      reply.status(200).send({ message: 'Deleted' });
     } catch (error) {
       fastify.log.error(error);
       reply.status(500).send({ error: 'Internal Server Error' });

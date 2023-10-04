@@ -15,3 +15,7 @@ logs
 .idea/
 .vscode/
 *.sw*
+
+.nyc_output
+.tap
+coverage

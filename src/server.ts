@@ -1,22 +1,38 @@
 import 'dotenv/config';
 import autoload from '@fastify/autoload';
+import fastifyJwt from '@fastify/jwt';
 import Fastify from 'fastify';
 import path from 'node:path';
 
 import seeds from './seed/seed';
 import { connect } from './connect';
 import { loggerConfig } from './configs/logger';
+import { authenticationConfig } from './configs/authentication';
+import { authenticateToken } from './utils/auth';
 
 const fastify = Fastify({
   logger: loggerConfig[process.env.SIRIUS_X_ATTENDANCE_PROJECT_STATUS] ?? true
-}); 
+});
 
-fastify.get('/', async function handler(request, reply) {
-  return { hello: 'world' };
+fastify.register(fastifyJwt, {
+  secret: authenticationConfig.secretKey,
+  sign: {
+    expiresIn: authenticationConfig.accessExpiresIn
+  }
+});
+
+fastify.addHook('onRequest', (request, reply, done) => {
+  if (authenticationConfig.excludedRoutes.includes(request.raw.url)) {
+    done();
+    return;
+  }
+
+  authenticateToken(request, reply, done, fastify);
 });
 
 fastify.setErrorHandler(function (error, request, reply) {
-  reply.status(400).send({ error });
+  fastify.log.error(error);
+  reply.status(500).send({ error: 'Internal Server Error' });
 });
 
 const start = async () => {

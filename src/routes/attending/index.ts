@@ -1,6 +1,6 @@
 import { createAttending, getAttendingById, updateAttendingById, deleteAttendingById, validateAttendingData, isUserAlreadyInUse } from '../../controllers/attendingController';
 
-export default async function(fastify) {
+export default async function (fastify) {
   fastify.post('/', async (request, reply) => {
     try {
       // if (!request.isAuthenticated) {
@@ -21,7 +21,7 @@ export default async function(fastify) {
       }
 
       createAttending(request.body);
-      reply.status(201).send({message: 'Created'});
+      reply.status(201).send({ message: 'Created' });
     } catch (error) {
       fastify.log.error(error);
       reply.status(500).send({ error: 'Internal Server Error' });
@@ -29,10 +29,6 @@ export default async function(fastify) {
   });
   fastify.get('/:id', async (request, reply) => {
     try {
-      // if (!request.isAuthenticated) {
-      //   reply.status(401).send({ error: 'Unauthorized' });
-      //   return;
-      // }
       const attendingId = request.query.id;
       const attending = await getAttendingById(attendingId);
 
@@ -50,10 +46,7 @@ export default async function(fastify) {
   fastify.put('/:id', async (request, reply) => {
     try {
       // const nameIsAlreadyInUse = false;
-      // if (!request.isAuthenticated) {
-      //   reply.status(401).send({ error: 'Unauthorized' });
-      //   return;
-      // }
+
       const attendingId = request.query.id;
       const attendingBody = request.body;
       const updatedAttending = await updateAttendingById(attendingId, attendingBody)
@@ -87,10 +80,6 @@ export default async function(fastify) {
   });
   fastify.delete('/:id', async (request, reply) => {
     try {
-      // if (!request.isAuthenticated) {
-      //   reply.status(401).send({ error: 'Unauthorized' });
-      //   return;
-      // }
       const attendingId = request.query.id;
       const deletedAttending = await deleteAttendingById(attendingId);
 
@@ -99,7 +88,7 @@ export default async function(fastify) {
         return;
       }
 
-      reply.status(200).send({message: 'Deleted'});
+      reply.status(200).send({ message: 'Deleted' });
     } catch (error) {
       fastify.log.error(error);
       reply.status(500).send({ error: 'Internal Server Error' });

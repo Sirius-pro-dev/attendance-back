@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid';
 import mongoose from 'mongoose';
 
 const roleSchema = new mongoose.Schema({
@@ -5,8 +6,9 @@ const roleSchema = new mongoose.Schema({
   slug: String,
   users: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   roleId: {
-    type: mongoose.Schema.Types.ObjectId,
-    default: new mongoose.Types.ObjectId()
+    type: String,
+    default: uuidv4,
+    unique: true
   }
 });
 

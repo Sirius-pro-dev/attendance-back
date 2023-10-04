@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
+import { v4 as uuidv4 } from 'uuid';
 
 export type UserType = Document & {
   firstname: string;
@@ -41,8 +42,9 @@ const userSchema = new mongoose.Schema({
     default: null
   },
   userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    default: new mongoose.Types.ObjectId()
+    type: String,
+    default: uuidv4,
+    unique: true
   }
 });
 

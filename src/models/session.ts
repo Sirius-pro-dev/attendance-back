@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid';
 import mongoose from 'mongoose';
 
 const sessionSchema = new mongoose.Schema({
@@ -7,8 +8,9 @@ const sessionSchema = new mongoose.Schema({
   author: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Teacher' }],
   group: { type: mongoose.Schema.Types.ObjectId, ref: 'Group' },
   sessionId: {
-    type: mongoose.Schema.Types.ObjectId,
-    default: new mongoose.Types.ObjectId()
+    type: String,
+    default: uuidv4,
+    unique: true
   }
 });
 

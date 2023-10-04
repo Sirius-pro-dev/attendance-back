@@ -8,10 +8,6 @@ import {
 export default async function (fastify) {
   fastify.post('/', async (request, reply) => {
     try {
-      // if (!request.isAuthenticated) {
-      //   reply.status(401).send({ error: 'Unauthorized' });
-      //   return;
-      // }
       createAttending(request.body);
       reply.status(201).send({ message: 'Created' });
     } catch (error) {
@@ -21,10 +17,6 @@ export default async function (fastify) {
   });
   fastify.get('/:id', async (request, reply) => {
     try {
-      // if (!request.isAuthenticated) {
-      //   reply.status(401).send({ error: 'Unauthorized' });
-      //   return;
-      // }
       const attendingId = request.query.id;
       const attending = await getAttendingById(attendingId);
 
@@ -42,10 +34,7 @@ export default async function (fastify) {
   fastify.put('/:id', async (request, reply) => {
     try {
       // const nameIsAlreadyInUse = false;
-      // if (!request.isAuthenticated) {
-      //   reply.status(401).send({ error: 'Unauthorized' });
-      //   return;
-      // }
+
       const attendingId = request.query.id;
       const attendingBody = request.body;
       const updatedAttending = await updateAttendingById(attendingId, attendingBody);
@@ -67,10 +56,6 @@ export default async function (fastify) {
   });
   fastify.delete('/:id', async (request, reply) => {
     try {
-      // if (!request.isAuthenticated) {
-      //   reply.status(401).send({ error: 'Unauthorized' });
-      //   return;
-      // }
       const attendingId = request.query.id;
       const deletedAttending = await deleteAttendingById(attendingId);
 

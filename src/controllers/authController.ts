@@ -12,7 +12,7 @@ export const login = async (data: { email: string; password: string }, fastify) 
   }
 };
 
-const checkLoginDetails = async  (data, fastify) => {
+const checkLoginDetails = async (data, fastify) => {
   try {
     const user = await User.findOne({ email: data.email });
     const isPasswordValid = await user.comparePassword(data.password);

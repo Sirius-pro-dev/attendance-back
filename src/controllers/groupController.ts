@@ -6,12 +6,6 @@ type Group = {
   users?: string,
 };
 
-type Group = {
-  name?: string,
-  sessions?: string,
-  users?: string,
-};
-
 export const createGroup = async data => {
   const newGroup = new Group(data);
   return await newGroup.save();
@@ -22,15 +16,26 @@ export const getAllGroup = async () => {
 };
 
 export const getGroupById = async id => {
-  return await Group.findById(id, { _id: 0, __v: 0 });
-};
+  return await Group.find({groupId: id}, { _id: 0, __v: 0 });};
 
 export const updateGroupById = async (id, body) => {
-  return await Group.findByIdAndUpdate(id, body, { new: true });
+  const group = await Group.findOne({groupId: id});
+
+  if (!group) {
+    return null;
+  }
+  
+  return await Group.findByIdAndUpdate( group._id, body, { new: true });
 };
 
 export const deleteGroupById = async id => {
-  return await Group.findByIdAndRemove(id);
+  const group = await Group.findOne({groupId: id});
+
+  if (!group) {
+    return null;
+  }
+
+  return await Group.findByIdAndRemove(group._id);
 };
 
 export const validateGroupData = (groupData) => {

@@ -3,10 +3,6 @@ import { createAttending, getAttendingById, updateAttendingById, deleteAttending
 export default async function (fastify) {
   fastify.post('/', async (request, reply) => {
     try {
-      // if (!request.isAuthenticated) {
-      //   reply.status(401).send({ error: 'Unauthorized' });
-      //   return;
-      // }
       const validationErrors = validateAttendingData(request.body);
       const isUserTaken = await isUserAlreadyInUse(request.body.user);
 
@@ -16,7 +12,7 @@ export default async function (fastify) {
       }
 
       if (isUserTaken) {
-        reply.status(409).send({ error: 'Attending is already in use' });
+        reply.status(409).send({ error: 'User is already in use' });
         return;
       }
 
@@ -32,7 +28,7 @@ export default async function (fastify) {
       const attendingId = request.query.id;
       const attending = await getAttendingById(attendingId);
 
-      if (!attending) {
+      if (attending.length === 0) {
         reply.status(404).send({ error: 'Attending not found' });
         return;
       }
@@ -45,11 +41,8 @@ export default async function (fastify) {
   });
   fastify.put('/:id', async (request, reply) => {
     try {
-      // const nameIsAlreadyInUse = false;
-
       const attendingId = request.query.id;
       const attendingBody = request.body;
-      const updatedAttending = await updateAttendingById(attendingId, attendingBody)
       const validationErrors = validateAttendingData(attendingBody);
       const isNameTaken = await isUserAlreadyInUse(request.body.user);
 
@@ -63,14 +56,12 @@ export default async function (fastify) {
         return;
       }
 
+      const updatedAttending = await updateAttendingById(attendingId, attendingBody)
+
       if (!updatedAttending) {
         reply.status(404).send({ error: 'Attending not found' });
         return;
       }
-
-      // if (nameIsAlreadyInUse) {
-      //   reply.status(409).send({ error: 'Name is already in use' });
-      // }
 
       reply.status(200).send(updatedAttending);
     } catch (error) {

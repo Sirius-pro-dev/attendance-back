@@ -4,7 +4,7 @@ type User = {
   firstname?: string;
   lastname?: string;
   middlename?: string;
-  login?: string;
+  email?: string;
   password?: string;
 };
 
@@ -19,15 +19,27 @@ export const getAllUsers = async () => {
 };
 
 export const getUserById = async id => {
-  return await User.findById(id, { _id: 0, __v: 0 });
+  return await User.find({ userId: id }, { _id: 0, __v: 0 });
 };
 
 export const updateUserById = async (id, body) => {
-  return await User.findByIdAndUpdate(id, body, { new: true });
+  const user = await User.findOne({userId: id});
+
+  if (!user) {
+    return null;
+  }
+
+  return await User.findByIdAndUpdate( user._id , body, { new: true });
 };
 
 export const deleteUserById = async id => {
-  return await User.findByIdAndRemove(id);
+  const user = await User.findOne({userId: id});
+
+  if (!user) {
+    return null;
+  }
+  
+  return await User.findByIdAndRemove(user._id);
 };
 
 export const validateUserData = (userData) => {
@@ -42,8 +54,8 @@ export const validateUserData = (userData) => {
   if (!userData.middlename) {
     errors.middlename = 'Middle name is required';
   }
-  if (!userData.login) {
-    errors.login = 'Login is required';
+  if (!userData.email) {
+    errors.email = 'Email is required';
   }
   if (!userData.password) {
     errors.password = 'Password is required';
@@ -51,15 +63,14 @@ export const validateUserData = (userData) => {
     errors.password = 'Password must be at least 8 characters long';
   }
 
-  if (userData.login && userData.login.length < 5) {
-    errors.login = 'Login must be at least 5 characters long';
+  if (userData.email && userData.email.length < 5) {
+    errors.email = 'Email must be at least 5 characters long';
   }
 
   return Object.keys(errors).length === 0 ? null : errors;
 };
 
-export const isLoginAlreadyInUse = async (login) => {
-    const user = await User.findOne({ login });
-    return user !== null;
-}
-  
+export const isEmailAlreadyInUse = async (email) => {
+  const user = await User.findOne({ email });
+  return !!user;
+};

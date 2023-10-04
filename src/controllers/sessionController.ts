@@ -19,15 +19,27 @@ export const getAllSession = async () => {
 };
 
 export const getSessionById = async id => {
-  return await Session.findById(id, { _id: 0, __v: 0 });
+  return await Session.find({sessionId: id}, { _id: 0, __v: 0 });
 };
 
 export const updateSessionById = async (id, body) => {
-  return await Session.findByIdAndUpdate(id, body, { new: true });
+  const session = await Session.findOne({sessionId: id});
+
+  if (!session) {
+    return null;
+  }
+
+  return await Session.findByIdAndUpdate(session._id, body, { new: true });
 };
 
 export const deleteSessionById = async id => {
-  return await Session.findByIdAndRemove(id);
+  const session = await Session.findOne({sessionId: id});
+
+  if (!session) {
+    return null;
+  }
+  
+  return await Session.findByIdAndRemove(session._id);
 };
 
 export const validateSessionData = (sessionData) => {

@@ -3,10 +3,6 @@ import { createGroup, getGroupById, updateGroupById, deleteGroupById, validateGr
 export default async function (fastify) {
   fastify.post('/', async (request, reply) => {
     try {
-      // if (!request.isAuthenticated) {
-      //   reply.status(401).send({ error: 'Unauthorized' });
-      //   return;
-      // }
       const validationErrors = validateGroupData(request.body);
       const isNameTaken = await isNameAlreadyInUse(request.body.name);
 
@@ -32,7 +28,7 @@ export default async function (fastify) {
       const groupId = request.query.id;
       const group = await getGroupById(groupId);
 
-      if (!group) {
+      if (group.length === 0) {
         reply.status(404).send({ error: 'Group not found' });
         return;
       }
@@ -45,13 +41,8 @@ export default async function (fastify) {
   });
   fastify.put('/:id', async (request, reply) => {
     try {
-      // if (!request.isAuthenticated) {
-      //   reply.status(401).send({ error: 'Unauthorized' });
-      //   return;
-      // }
       const groupId = request.query.id;
       const groupBody = request.body;
-      const updatedGroup = await updateGroupById(groupId, groupBody)
       const validationErrors = validateGroupData(groupBody);
       const isNameTaken = await isNameAlreadyInUse(request.body.name);
 
@@ -64,6 +55,8 @@ export default async function (fastify) {
         reply.status(409).send({ error: 'Name is already in use' });
         return;
       }
+
+      const updatedGroup = await updateGroupById(groupId, groupBody)
 
       if (!updatedGroup) {
         reply.status(404).send({ error: 'Group not found' });

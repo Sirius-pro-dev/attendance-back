@@ -16,6 +16,4 @@ logs
 .vscode/
 *.sw*
 
-.nyc_output
-.tap
 coverage

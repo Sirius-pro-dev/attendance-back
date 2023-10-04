@@ -1,8 +1,0 @@
-{
-  "exclude": ["./node_modules/*", "src/__test__/*", "**/*.test.ts"],
-  "nyc": {
-    "exclude": ["./node_modules/*", "src/__test__/*", "**/*.test.ts"],
-    "reporter": ["lcov", "text"]
-  },
-  "cwd": "."
-}

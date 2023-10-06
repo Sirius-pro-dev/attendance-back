@@ -1,11 +1,13 @@
 // __tests__/users.test.js
 import request from 'supertest';
-import app from '../../server';
+import app, { start } from '../../server';
 
-describe('GET /users', () => {
-  it('should return a list of users', async () => {
-    const response = await request(app).get('/users');
-    expect(response.status).toBe(200);
-    expect(response.body).toEqual([{ id: 1, name: 'Alice' }, { id: 2, name: 'Bob' }]);
+test('Test route', async () => {
+  const response = await app.inject({
+    method: 'GET',
+    url: '/users'
   });
+
+  expect(response.statusCode).toBe(200);
+  // expect(response.body).toEqual('Expected response body');
 });

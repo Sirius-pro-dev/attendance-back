@@ -1,9 +1,9 @@
-import { getAllSession } from '../../controllers/sessionController';
+import { getAllSessions } from '../../controllers/sessionController';
 
 export default async function (fastify) {
   fastify.get('/', async (request, reply) => {
     try {
-      const sessions = await getAllSession();
+      const sessions = await getAllSessions();
       reply.status(200).send(sessions);
     } catch (error) {
       fastify.log.error(error);

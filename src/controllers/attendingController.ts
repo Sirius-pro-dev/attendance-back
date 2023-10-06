@@ -5,7 +5,7 @@ export const createAttending = async data => {
   return await newAttending.save();
 };
 
-export const getAllAttending = async () => {
+export const getAllAttendings = async () => {
   return await Attending.find({}, { _id: 0, __v: 0 });
 };
 

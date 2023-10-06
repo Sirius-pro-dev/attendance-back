@@ -5,7 +5,7 @@ export const createSession = async data => {
   return await newSession.save();
 };
 
-export const getAllSession = async () => {
+export const getAllSessions = async () => {
   return await Session.find({}, { _id: 0, __v: 0 });
 };
 

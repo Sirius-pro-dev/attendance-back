@@ -65,3 +65,5 @@ process.on('SIGTERM', graceFulShutDown);
 fastify.register(autoload, {
   dir: path.join(__dirname, 'routes')
 });
+
+export default fastify

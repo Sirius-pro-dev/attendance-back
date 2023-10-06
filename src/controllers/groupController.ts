@@ -5,7 +5,7 @@ export const createGroup = async data => {
   return await newGroup.save();
 };
 
-export const getAllGroup = async () => {
+export const getAllGroups = async () => {
   return await Group.find({}, { _id: 0, __v: 0 });
 };
 

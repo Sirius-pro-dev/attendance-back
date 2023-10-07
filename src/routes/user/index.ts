@@ -1,8 +1,21 @@
-import { createUser, getUserById, updateUserById, deleteUserById } from '../../controllers/userController';
+import { createUser, getUserById, updateUserById, deleteUserById, validateUserData, isEmailAlreadyInUse } from '../../controllers/userController';
 
 export default async function (fastify) {
-  fastify.post('/', (request, reply) => {
+  fastify.post('/', async (request, reply) => {
     try {
+      const validationErrors = validateUserData(request.body);
+      const isEmailTaken = await isEmailAlreadyInUse(request.body.email);
+
+      if (validationErrors) {
+        reply.status(400).send({ error: 'Invalid Data', details: validationErrors });
+        return;
+      }
+
+      if (isEmailTaken) {
+        reply.status(409).send({ error: 'Email is already in use' });
+        return;
+      }
+
       createUser(request.body);
       reply.status(201).send({ message: 'Created' });
     } catch (error) {
@@ -15,7 +28,7 @@ export default async function (fastify) {
       const userId = request.query.id;
       const user = await getUserById(userId);
 
-      if (!user) {
+      if (user.length === 0) {
         reply.status(404).send({ error: 'User not found' });
         return;
       }
@@ -28,20 +41,27 @@ export default async function (fastify) {
   });
   fastify.put('/:id', async (request, reply) => {
     try {
-      // const nameIsAlreadyInUse = false;
-
       const userId = request.query.id;
       const userBody = request.body;
-      const updatedUser = await updateUserById(userId, userBody);
+      const isEmailTaken = await isEmailAlreadyInUse(userBody.email);
+      const validationErrors = validateUserData(userBody);
+
+      if (validationErrors) {
+        reply.status(400).send({ error: 'Invalid Data', details: validationErrors });
+        return;
+      }
+
+      if (isEmailTaken) {
+        reply.status(409).send({ error: 'Email is already in use' });
+        return;
+      }
+
+      const updatedUser = await updateUserById(userId, userBody)
 
       if (!updatedUser) {
         reply.status(404).send({ error: 'User not found' });
         return;
       }
-
-      // if (nameIsAlreadyInUse) {
-      //   reply.status(409).send({ error: 'Name is already in use' });
-      // }
 
       reply.status(200).send(updatedUser);
     } catch (error) {

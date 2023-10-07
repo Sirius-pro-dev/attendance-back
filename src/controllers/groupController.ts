@@ -11,7 +11,7 @@ export const createGroup = async data => {
   return await newGroup.save();
 };
 
-export const getAllGroup = async () => {
+export const getAllGroups = async () => {
   return await Group.find({}, { _id: 0, __v: 0 });
 };
 
@@ -44,12 +44,12 @@ export const validateGroupData = (groupData) => {
   if (!groupData.name) {
     errors.name = 'Name is required';
   }
-  if (!groupData.sessions) {
-    errors.sessions = 'Sessions is required';
-  }
-  if (!groupData.users) {
-    errors.users = 'Users is required';
-  }
+  // if (!groupData.sessions) {
+  //   errors.sessions = 'Sessions is required';
+  // }
+  // if (!groupData.users) {
+  //   errors.users = 'Users is required';
+  // }
 
   return Object.keys(errors).length === 0 ? null : errors;
 };

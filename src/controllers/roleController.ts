@@ -5,7 +5,7 @@ export const createRole = async data => {
   return await newRole.save();
 };
 
-export const getAllRole = async () => {
+export const getAllRoles = async () => {
   return await Role.find({}, { _id: 0, __v: 0 });
 };
 

@@ -14,7 +14,7 @@ export const createSession = async data => {
   return await newSession.save();
 };
 
-export const getAllSession = async () => {
+export const getAllSessions = async () => {
   return await Session.find({}, { _id: 0, __v: 0 });
 };
 
@@ -54,12 +54,12 @@ export const validateSessionData = (sessionData) => {
   if (!sessionData.timeTo) {
     errors.timeTo = 'TimeTo is required';
   }
-  if (!sessionData.author) {
-    errors.author = 'Author is required';
-  }
-  if (!sessionData.group) {
-    errors.group = 'Group is required';
-  }
+  // if (!sessionData.author) {
+  //   errors.author = 'Author is required';
+  // }
+  // if (!sessionData.group) {
+  //   errors.group = 'Group is required';
+  // }
 
   return Object.keys(errors).length === 0 ? null : errors;
 };

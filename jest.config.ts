@@ -4,6 +4,7 @@
  */
 
 import type { Config } from 'jest';
+require('dotenv').config({ path: '.env.test' });
 
 const config: Config = {
   // All imported modules in your tests should be mocked automatically
@@ -22,7 +23,7 @@ const config: Config = {
   collectCoverage: true,
 
   // An array of glob patterns indicating a set of files for which coverage information should be collected
-  collectCoverageFrom: ['**/src/**/*.ts'],
+  collectCoverageFrom: ['**/src/**/*.ts', '!./src/seed/seed.ts'],
 
   // The directory where Jest should output its coverage files
   coverageDirectory: 'coverage',

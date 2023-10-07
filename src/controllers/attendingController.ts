@@ -11,7 +11,7 @@ export const createAttending = async (data) => {
   return await newAttending.save();
 };
 
-export const getAllAttending = async () => {
+export const getAllAttendings = async () => {
   return await Attending.find({}, { _id: 0, __v: 0 });
 };
 
@@ -42,12 +42,12 @@ export const deleteAttendingById = async id => {
 export const validateAttendingData = (attendingData) => {
   const errors: Attending = {};
 
-  if (!attendingData.session) {
-    errors.session = 'Session is required';
-  }
-  if (!attendingData.user) {
-    errors.user = 'User is required';
-  }
+  // if (!attendingData.session) {
+  //   errors.session = 'Session is required';
+  // }
+  // if (!attendingData.user) {
+  //   errors.user = 'User is required';
+  // }
   if (!attendingData.joined_at) {
     errors.joined_at = 'joined_at is required';
   }
@@ -55,8 +55,8 @@ export const validateAttendingData = (attendingData) => {
   return Object.keys(errors).length === 0 ? null : errors;
 };
 
-export const isUserAlreadyInUse = async (name) => {
-    const attending = await Attending.findOne({ name });
+export const isUserAlreadyInUse = async (user) => {
+    const attending = await Attending.findOne({ user });
     return attending !== null;
 }
 

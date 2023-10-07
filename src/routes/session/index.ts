@@ -11,10 +11,10 @@ export default async function (fastify) {
         return;
       }
 
-      if (isTitleTaken) {
-        reply.status(409).send({ error: 'Title is already in use' });
-        return;
-      }
+      // if (isTitleTaken) {
+      //   reply.status(409).send({ error: 'Title is already in use' });
+      //   return;
+      // }
 
       createSession(request.body);
       reply.status(201).send({ message: 'Created' });
@@ -25,7 +25,7 @@ export default async function (fastify) {
   });
   fastify.get('/:id', async (request, reply) => {
     try {
-      const sessionId = request.query.id;
+      const sessionId = request.params.id;
       const session = await getSessionById(sessionId);
 
       if (session.length === 0) {
@@ -41,7 +41,7 @@ export default async function (fastify) {
   });
   fastify.put('/:id', async (request, reply) => {
     try {
-      const sessionId = request.query.id;
+      const sessionId = request.params.id;
       const sessionBody = request.body;
       const validationErrors = validateSessionData(sessionBody);
       const isTitleTaken = await isTitleAlreadyInUse(request.body.title);
@@ -51,10 +51,10 @@ export default async function (fastify) {
         return;
       }
 
-      if (isTitleTaken) {
-        reply.status(409).send({ error: 'Title is already in use' });
-        return;
-      }
+      // if (isTitleTaken) {
+      //   reply.status(409).send({ error: 'Title is already in use' });
+      //   return;
+      // }
 
       const updatedSession = await updateSessionById(sessionId, sessionBody)
 
@@ -71,7 +71,7 @@ export default async function (fastify) {
   });
   fastify.delete('/:id', async (request, reply) => {
     try {
-      const sessionId = request.query.id;
+      const sessionId = request.params.id;
       const deletedSession = await deleteSessionById(sessionId);
 
       if (!deletedSession) {

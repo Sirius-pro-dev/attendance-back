@@ -11,10 +11,10 @@ export default async function (fastify) {
         return;
       }
 
-      if (isEmailTaken) {
-        reply.status(409).send({ error: 'Email is already in use' });
-        return;
-      }
+      // if (isEmailTaken) {
+      //   reply.status(409).send({ error: 'Email is already in use' });
+      //   return;
+      // }
 
       createUser(request.body);
       reply.status(201).send({ message: 'Created' });
@@ -25,9 +25,8 @@ export default async function (fastify) {
   });
   fastify.get('/:id', async (request, reply) => {
     try {
-      const userId = request.query.id;
+      const userId = request.params.id;
       const user = await getUserById(userId);
-
       if (user.length === 0) {
         reply.status(404).send({ error: 'User not found' });
         return;
@@ -41,7 +40,7 @@ export default async function (fastify) {
   });
   fastify.put('/:id', async (request, reply) => {
     try {
-      const userId = request.query.id;
+      const userId = request.params.id;
       const userBody = request.body;
       const isEmailTaken = await isEmailAlreadyInUse(userBody.email);
       const validationErrors = validateUserData(userBody);
@@ -51,10 +50,10 @@ export default async function (fastify) {
         return;
       }
 
-      if (isEmailTaken) {
-        reply.status(409).send({ error: 'Email is already in use' });
-        return;
-      }
+      // if (isEmailTaken) {
+      //   reply.status(409).send({ error: 'Email is already in use' });
+      //   return;
+      // }
 
       const updatedUser = await updateUserById(userId, userBody)
 
@@ -71,7 +70,7 @@ export default async function (fastify) {
   });
   fastify.delete('/:id', async (request, reply) => {
     try {
-      const userId = request.query.id;
+      const userId = request.params.id;
       const deletedUser = await deleteUserById(userId);
 
       if (!deletedUser) {

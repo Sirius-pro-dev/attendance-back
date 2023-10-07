@@ -35,7 +35,7 @@ fastify.setErrorHandler(function (error, request, reply) {
   reply.status(500).send({ error: 'Internal Server Error' });
 });
 
-export const start = async () => {
+const start = async () => {
   try {
     await fastify.listen({
       port: Number(process.env.SIRIUS_X_ATTENDANCE_PORT) || 3001

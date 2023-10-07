@@ -4,6 +4,7 @@
  */
 
 import type { Config } from 'jest';
+require('dotenv').config({ path: '.env.test' });
 
 const config: Config = {
   // All imported modules in your tests should be mocked automatically

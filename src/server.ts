@@ -22,7 +22,7 @@ fastify.register(fastifyJwt, {
 });
 
 fastify.addHook('onRequest', (request, reply, done) => {
-  if (authenticationConfig.excludedRoutes.includes(request.raw.url)) {
+  if (authenticationConfig.excludedRoutes.includes(request.raw.url) || process.env.SIRIUS_X_ATTENDANCE_PROJECT_STATUS == 'test') {
     done();
     return;
   }

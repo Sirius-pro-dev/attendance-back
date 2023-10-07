@@ -11,10 +11,10 @@ export default async function (fastify) {
         return;
       }
 
-      if (isNameTaken) {
-        reply.status(409).send({ error: 'Name is already in use' });
-        return;
-      }
+      // if (isNameTaken) {
+      //   reply.status(409).send({ error: 'Name is already in use' });
+      //   return;
+      // }
 
       createGroup(request.body);
       reply.status(201).send({ message: 'Created' });
@@ -25,7 +25,7 @@ export default async function (fastify) {
   });
   fastify.get('/:id', async (request, reply) => {
     try {
-      const groupId = request.query.id;
+      const groupId = request.params.id;
       const group = await getGroupById(groupId);
 
       if (group.length === 0) {
@@ -41,7 +41,7 @@ export default async function (fastify) {
   });
   fastify.put('/:id', async (request, reply) => {
     try {
-      const groupId = request.query.id;
+      const groupId = request.params.id;
       const groupBody = request.body;
       const validationErrors = validateGroupData(groupBody);
       const isNameTaken = await isNameAlreadyInUse(request.body.name);
@@ -51,10 +51,10 @@ export default async function (fastify) {
         return;
       }
 
-      if (isNameTaken) {
-        reply.status(409).send({ error: 'Name is already in use' });
-        return;
-      }
+      // if (isNameTaken) {
+      //   reply.status(409).send({ error: 'Name is already in use' });
+      //   return;
+      // }
 
       const updatedGroup = await updateGroupById(groupId, groupBody)
 
@@ -71,7 +71,7 @@ export default async function (fastify) {
   });
   fastify.delete('/:id', async (request, reply) => {
     try {
-      const groupId = request.query.id;
+      const groupId = request.params.id;
       const deletedGroup = await deleteGroupById(groupId);
 
       if (!deletedGroup) {

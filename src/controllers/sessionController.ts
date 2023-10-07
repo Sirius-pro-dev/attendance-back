@@ -45,21 +45,21 @@ export const deleteSessionById = async id => {
 export const validateSessionData = (sessionData) => {
   const errors: Session = {};
 
-  if (!sessionData.title) {
-    errors.title = 'Title is required';
-  }
-  if (!sessionData.timeFrom) {
-    errors.timeFrom = 'TimeFrom is required';
-  }
-  if (!sessionData.timeTo) {
-    errors.timeTo = 'TimeTo is required';
-  }
-  if (!sessionData.author) {
-    errors.author = 'Author is required';
-  }
-  if (!sessionData.group) {
-    errors.group = 'Group is required';
-  }
+  // if (!sessionData.title) {
+  //   errors.title = 'Title is required';
+  // }
+  // if (!sessionData.timeFrom) {
+  //   errors.timeFrom = 'TimeFrom is required';
+  // }
+  // if (!sessionData.timeTo) {
+  //   errors.timeTo = 'TimeTo is required';
+  // }
+  // if (!sessionData.author) {
+  //   errors.author = 'Author is required';
+  // }
+  // if (!sessionData.group) {
+  //   errors.group = 'Group is required';
+  // }
 
   return Object.keys(errors).length === 0 ? null : errors;
 };

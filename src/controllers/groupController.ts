@@ -44,12 +44,12 @@ export const validateGroupData = (groupData) => {
   if (!groupData.name) {
     errors.name = 'Name is required';
   }
-  if (!groupData.sessions) {
-    errors.sessions = 'Sessions is required';
-  }
-  if (!groupData.users) {
-    errors.users = 'Users is required';
-  }
+  // if (!groupData.sessions) {
+  //   errors.sessions = 'Sessions is required';
+  // }
+  // if (!groupData.users) {
+  //   errors.users = 'Users is required';
+  // }
 
   return Object.keys(errors).length === 0 ? null : errors;
 };

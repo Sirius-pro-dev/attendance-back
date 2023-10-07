@@ -1,13 +1,21 @@
-import {
-  createSession,
-  getSessionById,
-  updateSessionById,
-  deleteSessionById
-} from '../../controllers/sessionController';
+import { createSession, getSessionById, updateSessionById, deleteSessionById, validateSessionData, isTitleAlreadyInUse } from '../../controllers/sessionController';
 
 export default async function (fastify) {
-  fastify.post('/', (request, reply) => {
+  fastify.post('/', async (request, reply) => {
     try {
+      const validationErrors = validateSessionData(request.body);
+      const isTitleTaken = await isTitleAlreadyInUse(request.body.title);
+
+      if (validationErrors) {
+        reply.status(400).send({ error: 'Invalid Data', details: validationErrors });
+        return;
+      }
+
+      if (isTitleTaken) {
+        reply.status(409).send({ error: 'Title is already in use' });
+        return;
+      }
+
       createSession(request.body);
       reply.status(201).send({ message: 'Created' });
     } catch (error) {
@@ -20,7 +28,7 @@ export default async function (fastify) {
       const sessionId = request.query.id;
       const session = await getSessionById(sessionId);
 
-      if (!session) {
+      if (session.length === 0) {
         reply.status(404).send({ error: 'Session not found' });
         return;
       }
@@ -33,20 +41,27 @@ export default async function (fastify) {
   });
   fastify.put('/:id', async (request, reply) => {
     try {
-      // const nameIsAlreadyInUse = false;
-
       const sessionId = request.query.id;
       const sessionBody = request.body;
-      const updatedSession = await updateSessionById(sessionId, sessionBody);
+      const validationErrors = validateSessionData(sessionBody);
+      const isTitleTaken = await isTitleAlreadyInUse(request.body.title);
+
+      if (validationErrors) {
+        reply.status(400).send({ error: 'Invalid Data', details: validationErrors });
+        return;
+      }
+
+      if (isTitleTaken) {
+        reply.status(409).send({ error: 'Title is already in use' });
+        return;
+      }
+
+      const updatedSession = await updateSessionById(sessionId, sessionBody)
 
       if (!updatedSession) {
         reply.status(404).send({ error: 'Session not found' });
         return;
       }
-
-      // if (nameIsAlreadyInUse) {
-      //   reply.status(409).send({ error: 'Name is already in use' });
-      // }
 
       reply.status(200).send(updatedSession);
     } catch (error) {

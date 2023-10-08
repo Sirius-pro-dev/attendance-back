@@ -2,11 +2,11 @@ import { ObjectId } from 'mongoose';
 import Session from '../models/session';
 
 type Session = {
-  title?: string,
-  timeFrom?: string,
-  timeTo?: string,
-  author?: string,
-  group?: string
+  title?: string;
+  timeFrom?: string;
+  timeTo?: string;
+  author?: string;
+  group?: string;
 };
 
 export const createSession = async data => {
@@ -14,16 +14,16 @@ export const createSession = async data => {
   return await newSession.save();
 };
 
-export const getAllSession = async () => {
+export const getAllSessions = async () => {
   return await Session.find({}, { _id: 0, __v: 0 });
 };
 
 export const getSessionById = async id => {
-  return await Session.find({sessionId: id}, { _id: 0, __v: 0 });
+  return await Session.find({ sessionId: id }, { _id: 0, __v: 0 });
 };
 
 export const updateSessionById = async (id, body) => {
-  const session = await Session.findOne({sessionId: id});
+  const session = await Session.findOne({ sessionId: id });
 
   if (!session) {
     return null;
@@ -33,16 +33,16 @@ export const updateSessionById = async (id, body) => {
 };
 
 export const deleteSessionById = async id => {
-  const session = await Session.findOne({sessionId: id});
+  const session = await Session.findOne({ sessionId: id });
 
   if (!session) {
     return null;
   }
-  
+
   return await Session.findByIdAndRemove(session._id);
 };
 
-export const validateSessionData = (sessionData) => {
+export const validateSessionData = sessionData => {
   const errors: Session = {};
 
   if (!sessionData.title) {
@@ -54,17 +54,17 @@ export const validateSessionData = (sessionData) => {
   if (!sessionData.timeTo) {
     errors.timeTo = 'TimeTo is required';
   }
-  if (!sessionData.author) {
-    errors.author = 'Author is required';
-  }
-  if (!sessionData.group) {
-    errors.group = 'Group is required';
-  }
+  // if (!sessionData.author) {
+  //   errors.author = 'Author is required';
+  // }
+  // if (!sessionData.group) {
+  //   errors.group = 'Group is required';
+  // }
 
   return Object.keys(errors).length === 0 ? null : errors;
 };
 
-export const isTitleAlreadyInUse = async (title) => {
-    const session = await Session.findOne({ title });
-    return session !== null;
-}
+export const isTitleAlreadyInUse = async title => {
+  const session = await Session.findOne({ title });
+  return session !== null;
+};

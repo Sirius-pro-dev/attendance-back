@@ -1,3 +1,4 @@
+import { generateQR } from './../../utils/qr/index';
 import {
   createSession,
   getSessionById,
@@ -71,5 +72,25 @@ export default async function (fastify) {
     }
 
     reply.status(200).send({ message: 'Deleted' });
+  });
+  fastify.get('/QRCode', async (request, reply) => {
+    try {
+      const { url } = request.headers;
+
+      if (!url) {
+        reply.status(400).send({ error: 'url not loyal' });
+        return;
+      }
+
+      const genQR = generateQR(url);
+
+      reply
+        .status(200)
+        .header('Content-Type', 'image/png')
+        .send(Buffer.from((await genQR).replace(/^data:image\/(png);base64,/, ''), 'base64'));
+    } catch (error) {
+      fastify.log.error(error);
+      reply.status(500).send({ error: 'Internal Server Error' });
+    }
   });
 }

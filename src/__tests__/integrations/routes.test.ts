@@ -19,6 +19,21 @@ describe('Test routes', () => {
       });
     });
   });
+  describe('QR', () => {
+    describe('GET /session/QRCode', () => {
+      it('correct', async () => {
+        const response = await app.inject({
+          method: 'GET',
+          url: '/session/QRCode',
+          headers: {
+            url: 'http://testurl:testport/',
+          }
+        });
+
+        expect(response.statusCode).toBe(200);
+      });
+    });
+  });
 
   describe('users', () => {
     describe('GET /users', () => {
@@ -402,6 +417,18 @@ describe('Test routes', () => {
         });
 
         expect(response.statusCode).toBe(404);
+      });
+    });
+    describe('healthcheck', () => {
+      describe('GET /healthcheck', () => {
+        it('correct', async () => {
+          const response = await app.inject({
+            method: 'GET',
+            url: '/healthcheck'
+          });
+
+          expect(response.statusCode).toBe(200);
+        });
       });
     });
 

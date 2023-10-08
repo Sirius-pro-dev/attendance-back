@@ -1,9 +1,9 @@
 import request from 'supertest';
 import app from '../../server';
-import User from '../../models/user'
-import Attending from '../../models/attending'
-import Group from '../../models/group'
-import Session from '../../models/session'
+import User from '../../models/user';
+import Attending from '../../models/attending';
+import Group from '../../models/group';
+import Session from '../../models/session';
 import { getAllUsers } from '../../controllers/userController';
 
 describe('Test routes', () => {
@@ -16,10 +16,9 @@ describe('Test routes', () => {
         });
 
         expect(response.statusCode).toBe(200);
-      })
-    })
-  })
-
+      });
+    });
+  });
 
   describe('users', () => {
     describe('GET /users', () => {
@@ -30,8 +29,8 @@ describe('Test routes', () => {
         });
 
         expect(response.statusCode).toBe(200);
-      })
-    })
+      });
+    });
 
     describe('GET /user/:id', () => {
       it('correct', async () => {
@@ -42,7 +41,7 @@ describe('Test routes', () => {
         });
 
         expect(response.statusCode).toBe(200);
-      })
+      });
 
       it('404', async () => {
         const response = await app.inject({
@@ -51,8 +50,8 @@ describe('Test routes', () => {
         });
 
         expect(response.statusCode).toBe(404);
-      })
-    })
+      });
+    });
 
     describe('POST /user/:id', () => {
       it('correct', async () => {
@@ -69,7 +68,7 @@ describe('Test routes', () => {
         });
 
         expect(response.statusCode).toBe(201);
-      })
+      });
 
       it('400 error', async () => {
         const response = await app.inject({
@@ -85,8 +84,8 @@ describe('Test routes', () => {
         });
 
         expect(response.statusCode).toBe(400);
-      })
-    })
+      });
+    });
 
     describe('PUT /user/:id', () => {
       it('correct', async () => {
@@ -103,7 +102,7 @@ describe('Test routes', () => {
           }
         });
         expect(response.statusCode).toBe(200);
-      })
+      });
 
       it('400 error', async () => {
         const id = (await User.findOne()).userId;
@@ -119,8 +118,8 @@ describe('Test routes', () => {
           }
         });
         expect(response.statusCode).toBe(400);
-      })
-    })
+      });
+    });
 
     describe('DELETE /user/:id', () => {
       it('correct', async () => {
@@ -131,7 +130,7 @@ describe('Test routes', () => {
         });
 
         expect(response.statusCode).toBe(200);
-      })
+      });
 
       it('404 error', async () => {
         const response = await app.inject({
@@ -140,10 +139,9 @@ describe('Test routes', () => {
         });
 
         expect(response.statusCode).toBe(404);
-      })
-    })
-  })
-
+      });
+    });
+  });
 
   describe('attending', () => {
     describe('GET /attendings', () => {
@@ -154,8 +152,8 @@ describe('Test routes', () => {
         });
 
         expect(response.statusCode).toBe(200);
-      })
-    })
+      });
+    });
 
     describe('GET /attending/:id', () => {
       it('correct', async () => {
@@ -166,7 +164,7 @@ describe('Test routes', () => {
         });
 
         expect(response.statusCode).toBe(200);
-      })
+      });
 
       it('404 error', async () => {
         const response = await app.inject({
@@ -175,8 +173,8 @@ describe('Test routes', () => {
         });
 
         expect(response.statusCode).toBe(404);
-      })
-    })
+      });
+    });
 
     describe('POST /attending/:id', () => {
       it('correct', async () => {
@@ -192,7 +190,7 @@ describe('Test routes', () => {
           }
         });
         expect(response.statusCode).toBe(201);
-      })
+      });
 
       it('400 error', async () => {
         const response = await app.inject({
@@ -205,12 +203,12 @@ describe('Test routes', () => {
           }
         });
         expect(response.statusCode).toBe(400);
-      })
-    })
+      });
+    });
 
     describe('PUT /attending/:id', () => {
       it('correct', async () => {
-        const attending = (await Attending.findOne());
+        const attending = await Attending.findOne();
         const sessionId = (await Session.findOne()).sessionId;
 
         const response = await app.inject({
@@ -223,10 +221,10 @@ describe('Test routes', () => {
           }
         });
         expect(response.statusCode).toBe(200);
-      })
+      });
 
       it('400 error', async () => {
-        const attending = (await Attending.findOne());
+        const attending = await Attending.findOne();
 
         const response = await app.inject({
           method: 'PUT',
@@ -238,8 +236,8 @@ describe('Test routes', () => {
           }
         });
         expect(response.statusCode).toBe(400);
-      })
-    })
+      });
+    });
 
     describe('DELETE /attending/:id', () => {
       it('correct', async () => {
@@ -250,7 +248,7 @@ describe('Test routes', () => {
         });
 
         expect(response.statusCode).toBe(200);
-      })
+      });
 
       it('404 error', async () => {
         const response = await app.inject({
@@ -259,10 +257,9 @@ describe('Test routes', () => {
         });
 
         expect(response.statusCode).toBe(404);
-      })
-    })
-  })
-
+      });
+    });
+  });
 
   describe('group', () => {
     describe('GET /groups', () => {
@@ -273,8 +270,8 @@ describe('Test routes', () => {
         });
 
         expect(response.statusCode).toBe(200);
-      })
-    })
+      });
+    });
 
     describe('GET /group/:id', () => {
       it('correct', async () => {
@@ -285,7 +282,7 @@ describe('Test routes', () => {
         });
 
         expect(response.statusCode).toBe(200);
-      })
+      });
 
       it('404 error', async () => {
         const response = await app.inject({
@@ -294,8 +291,8 @@ describe('Test routes', () => {
         });
 
         expect(response.statusCode).toBe(404);
-      })
-    })
+      });
+    });
 
     describe('POST /group/:id', () => {
       it('correct', async () => {
@@ -309,7 +306,7 @@ describe('Test routes', () => {
           }
         });
         expect(response.statusCode).toBe(201);
-      })
+      });
 
       it('400 error', async () => {
         const response = await app.inject({
@@ -321,12 +318,12 @@ describe('Test routes', () => {
           }
         });
         expect(response.statusCode).toBe(400);
-      })
-    })
+      });
+    });
 
     describe('PUT /group/:id', () => {
       it('correct', async () => {
-        const group = (await Group.findOne());
+        const group = await Group.findOne();
         const userId = (await User.findOne()).userId;
         const response = await app.inject({
           method: 'PUT',
@@ -337,10 +334,10 @@ describe('Test routes', () => {
           }
         });
         expect(response.statusCode).toBe(200);
-      })
+      });
 
       it('400 error', async () => {
-        const group = (await Group.findOne());
+        const group = await Group.findOne();
         const response = await app.inject({
           method: 'PUT',
           url: `/group/${group.groupId}`,
@@ -350,8 +347,8 @@ describe('Test routes', () => {
           }
         });
         expect(response.statusCode).toBe(400);
-      })
-    })
+      });
+    });
 
     describe('DELETE /group/:id', () => {
       it('correct', async () => {
@@ -362,7 +359,7 @@ describe('Test routes', () => {
         });
 
         expect(response.statusCode).toBe(200);
-      })
+      });
 
       it('404 error', async () => {
         const response = await app.inject({
@@ -371,10 +368,9 @@ describe('Test routes', () => {
         });
 
         expect(response.statusCode).toBe(404);
-      })
-    })
-  })
-
+      });
+    });
+  });
 
   describe('session', () => {
     describe('GET /sessions', () => {
@@ -385,8 +381,8 @@ describe('Test routes', () => {
         });
 
         expect(response.statusCode).toBe(200);
-      })
-    })
+      });
+    });
 
     describe('GET /session/:id', () => {
       it('correct', async () => {
@@ -397,7 +393,7 @@ describe('Test routes', () => {
         });
 
         expect(response.statusCode).toBe(200);
-      })
+      });
 
       it('404 error', async () => {
         const response = await app.inject({
@@ -406,8 +402,8 @@ describe('Test routes', () => {
         });
 
         expect(response.statusCode).toBe(404);
-      })
-    })
+      });
+    });
 
     describe('POST /session/:id', () => {
       it('correct', async () => {
@@ -425,7 +421,7 @@ describe('Test routes', () => {
           }
         });
         expect(response.statusCode).toBe(201);
-      })
+      });
 
       it('400 error', async () => {
         const response = await app.inject({
@@ -440,8 +436,8 @@ describe('Test routes', () => {
           }
         });
         expect(response.statusCode).toBe(400);
-      })
-    })
+      });
+    });
 
     describe('PUT /session/:id', () => {
       it('correct', async () => {
@@ -460,7 +456,7 @@ describe('Test routes', () => {
           }
         });
         expect(response.statusCode).toBe(200);
-      })
+      });
 
       it('400 error', async () => {
         const id = (await Session.findOne()).sessionId;
@@ -476,8 +472,8 @@ describe('Test routes', () => {
           }
         });
         expect(response.statusCode).toBe(400);
-      })
-    })
+      });
+    });
 
     describe('DELETE /session/:id', () => {
       it('correct', async () => {
@@ -488,7 +484,7 @@ describe('Test routes', () => {
         });
 
         expect(response.statusCode).toBe(200);
-      })
+      });
 
       it('404 error', async () => {
         const response = await app.inject({
@@ -497,16 +493,17 @@ describe('Test routes', () => {
         });
 
         expect(response.statusCode).toBe(404);
-      })
-    })
-  })
-
+      });
+    });
+  });
 
   describe('auth', () => {
     describe('POST /auth/register', () => {
       it('correct', async () => {
         const user = await User.findOne({ email: 'testtest2' });
-        if (user) { await User.findByIdAndRemove(user._id); }
+        if (user) {
+          await User.findByIdAndRemove(user._id);
+        }
 
         const response = await app.inject({
           method: 'POST',
@@ -521,7 +518,7 @@ describe('Test routes', () => {
         });
 
         expect(response.statusCode).toBe(200);
-      })
+      });
 
       it('500 error', async () => {
         const response = await app.inject({
@@ -537,12 +534,12 @@ describe('Test routes', () => {
         });
 
         expect(response.statusCode).toBe(500);
-      })
-    })
+      });
+    });
 
     describe('POST /login', () => {
       it('correct', async () => {
-        if (!await User.findOne({ email: 'artur' })) {
+        if (!(await User.findOne({ email: 'artur' }))) {
           const user1 = new User({
             firstname: 'Артур',
             lastname: 'Амантаев',
@@ -562,7 +559,7 @@ describe('Test routes', () => {
         });
 
         expect(response.statusCode).toBe(200);
-      })
+      });
 
       it('correct', async () => {
         const response = await app.inject({
@@ -575,7 +572,7 @@ describe('Test routes', () => {
         });
 
         expect(response.statusCode).toBe(401);
-      })
-    })
-  })
-})
+      });
+    });
+  });
+});

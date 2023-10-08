@@ -4,7 +4,7 @@ import {
   getSessionById,
   updateSessionById,
   deleteSessionById
-} from '../../controllers/sessionController';  // Adjust the import path based on your project structure
+} from '../../controllers/sessionController'; // Adjust the import path based on your project structure
 import Session from '../../models/session';
 
 jest.mock('../../models/session', () => ({
@@ -27,7 +27,7 @@ describe('Session API functions', () => {
   //     const sessionData = { name: 'John Doe', email: 'john@example.com' };
 
   //     const result = await createSession(sessionData);
-  
+
   //     expect(Session).toHaveBeenCalledWith(sessionData);  // Ensure Session was called with correct data
   //     // expect(result.data).toEqual(sessionData);
   //   });
@@ -54,7 +54,9 @@ describe('Session API functions', () => {
   describe('updateSessionById', () => {
     it('should update a session by ID', async () => {
       const sessionId = 'someSessionId';
-      const updatedData = { /* Updated data */ };
+      const updatedData = {
+        /* Updated data */
+      };
 
       await updateSessionById(sessionId, updatedData);
 

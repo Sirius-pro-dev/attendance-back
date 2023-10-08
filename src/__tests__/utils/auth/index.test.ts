@@ -1,22 +1,22 @@
-import { authenticateToken } from '../../../utils/auth/index'
+import { authenticateToken } from '../../../utils/auth/index';
 
 // Mock dependencies
 const mockRequest = {
   headers: {
-    authorization: 'mockedToken',
+    authorization: 'mockedToken'
   },
-  jwtVerify: jest.fn().mockReturnValue({ userId: 'mockedUserId' }),
+  jwtVerify: jest.fn().mockReturnValue({ userId: 'mockedUserId' })
 };
 
 const mockReply = {
   status: jest.fn().mockReturnThis(),
-  send: jest.fn(),
+  send: jest.fn()
 };
 
 const mockFastify = {
   log: {
-    error: jest.fn(),
-  },
+    error: jest.fn()
+  }
 };
 
 describe('authenticateToken', () => {

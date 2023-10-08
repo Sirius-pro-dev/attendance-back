@@ -4,7 +4,7 @@ import {
   getGroupById,
   updateGroupById,
   deleteGroupById
-} from '../../controllers/groupController';  // Adjust the import path based on your project structure
+} from '../../controllers/groupController'; // Adjust the import path based on your project structure
 import Group from '../../models/group';
 
 jest.mock('../../models/group', () => ({
@@ -15,7 +15,7 @@ jest.mock('../../models/group', () => ({
     findOne: jest.fn(),
     findById: jest.fn(),
     findByIdAndUpdate: jest.fn(),
-    findByIdAndRemove: jest.fn(),
+    findByIdAndRemove: jest.fn()
   }
 }));
 
@@ -29,7 +29,7 @@ describe('Group API functions', () => {
   //     const groupData = { name: 'John Doe', email: 'john@example.com' };
 
   //     const result = await createGroup(groupData);
-  
+
   //     expect(Group).toHaveBeenCalledWith(groupData);  // Ensure Group was called with correct data
   //     // expect(result.data).toEqual(groupData);
   //   });
@@ -56,7 +56,9 @@ describe('Group API functions', () => {
   describe('updateGroupById', () => {
     it('should update a group by ID', async () => {
       const groupId = 'someGroupId';
-      const updatedData = { /* Updated data */ };
+      const updatedData = {
+        /* Updated data */
+      };
 
       await updateGroupById(groupId, updatedData);
 

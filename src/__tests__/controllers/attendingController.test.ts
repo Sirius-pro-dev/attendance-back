@@ -4,7 +4,7 @@ import {
   getAttendingById,
   updateAttendingById,
   deleteAttendingById
-} from '../../controllers/attendingController';  // Adjust the import path based on your project structure
+} from '../../controllers/attendingController'; // Adjust the import path based on your project structure
 import Attending from '../../models/attending';
 
 jest.mock('../../models/attending', () => ({
@@ -15,7 +15,7 @@ jest.mock('../../models/attending', () => ({
     findOne: jest.fn(),
     findById: jest.fn(),
     findByIdAndUpdate: jest.fn(),
-    findByIdAndRemove: jest.fn(),
+    findByIdAndRemove: jest.fn()
   }
 }));
 
@@ -29,7 +29,7 @@ describe('Attending API functions', () => {
   //     const attendingData = { name: 'John Doe', email: 'john@example.com' };
 
   //     const result = await createAttending(attendingData);
-  
+
   //     expect(Attending).toHaveBeenCalledWith(attendingData);  // Ensure Attending was called with correct data
   //     // expect(result.data).toEqual(attendingData);
   //   });
@@ -56,7 +56,9 @@ describe('Attending API functions', () => {
   describe('updateAttendingById', () => {
     it('should update a attending by ID', async () => {
       const attendingId = 'someAttendingId';
-      const updatedData = { /* Updated data */ };
+      const updatedData = {
+        /* Updated data */
+      };
 
       await updateAttendingById(attendingId, updatedData);
 

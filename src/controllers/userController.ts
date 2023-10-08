@@ -8,7 +8,7 @@ type User = {
   password?: string;
 };
 
-export const createUser = async (data) => {
+export const createUser = async data => {
   const newUser = new User(data);
   await newUser.save();
   return newUser;
@@ -23,26 +23,26 @@ export const getUserById = async id => {
 };
 
 export const updateUserById = async (id, body) => {
-  const user = await User.findOne({userId: id});
+  const user = await User.findOne({ userId: id });
 
   if (!user) {
     return null;
   }
 
-  return await User.findByIdAndUpdate( user._id , body, { new: true });
+  return await User.findByIdAndUpdate(user._id, body, { new: true });
 };
 
 export const deleteUserById = async id => {
-  const user = await User.findOne({userId: id});
+  const user = await User.findOne({ userId: id });
 
   if (!user) {
     return null;
   }
-  
+
   return await User.findByIdAndRemove(user._id);
 };
 
-export const validateUserData = (userData) => {
+export const validateUserData = userData => {
   const errors: User = {};
 
   if (!userData.firstname) {
@@ -70,7 +70,7 @@ export const validateUserData = (userData) => {
   return Object.keys(errors).length === 0 ? null : errors;
 };
 
-export const isEmailAlreadyInUse = async (email) => {
+export const isEmailAlreadyInUse = async email => {
   const user = await User.findOne({ email });
   return !!user;
 };

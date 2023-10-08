@@ -1,9 +1,9 @@
 import Group from '../models/group';
 
 type Group = {
-  name?: string,
-  sessions?: string,
-  users?: string,
+  name?: string;
+  sessions?: string;
+  users?: string;
 };
 
 export const createGroup = async data => {
@@ -16,20 +16,21 @@ export const getAllGroups = async () => {
 };
 
 export const getGroupById = async id => {
-  return await Group.find({groupId: id}, { _id: 0, __v: 0 });};
+  return await Group.find({ groupId: id }, { _id: 0, __v: 0 });
+};
 
 export const updateGroupById = async (id, body) => {
-  const group = await Group.findOne({groupId: id});
+  const group = await Group.findOne({ groupId: id });
 
   if (!group) {
     return null;
   }
-  
-  return await Group.findByIdAndUpdate( group._id, body, { new: true });
+
+  return await Group.findByIdAndUpdate(group._id, body, { new: true });
 };
 
 export const deleteGroupById = async id => {
-  const group = await Group.findOne({groupId: id});
+  const group = await Group.findOne({ groupId: id });
 
   if (!group) {
     return null;
@@ -38,7 +39,7 @@ export const deleteGroupById = async id => {
   return await Group.findByIdAndRemove(group._id);
 };
 
-export const validateGroupData = (groupData) => {
+export const validateGroupData = groupData => {
   const errors: Group = {};
 
   if (!groupData.name) {
@@ -54,9 +55,7 @@ export const validateGroupData = (groupData) => {
   return Object.keys(errors).length === 0 ? null : errors;
 };
 
-export const isNameAlreadyInUse = async (name) => {
-    const group = await Group.findOne({ name });
-    return group !== null;
-}
-
-  
+export const isNameAlreadyInUse = async name => {
+  const group = await Group.findOne({ name });
+  return group !== null;
+};

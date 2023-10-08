@@ -1,10 +1,4 @@
-import {
-  createUser,
-  getAllUsers,
-  getUserById,
-  updateUserById,
-  deleteUserById
-} from '../../controllers/userController';  // Adjust the import path based on your project structure
+import { createUser, getAllUsers, getUserById, updateUserById, deleteUserById } from '../../controllers/userController'; // Adjust the import path based on your project structure
 import User from '../../models/user';
 
 jest.mock('../../models/user', () => ({
@@ -15,7 +9,7 @@ jest.mock('../../models/user', () => ({
     findOne: jest.fn(),
     findById: jest.fn(),
     findByIdAndUpdate: jest.fn(),
-    findByIdAndRemove: jest.fn(),
+    findByIdAndRemove: jest.fn()
   }
 }));
 
@@ -29,7 +23,7 @@ describe('User API functions', () => {
   //     const userData = { name: 'John Doe', email: 'john@example.com' };
 
   //     const result = await createUser(userData);
-  
+
   //     expect(User).toHaveBeenCalledWith(userData);  // Ensure User was called with correct data
   //     // expect(result.data).toEqual(userData);
   //   });
@@ -56,7 +50,9 @@ describe('User API functions', () => {
   describe('updateUserById', () => {
     it('should update a user by ID', async () => {
       const userId = 'someUserId';
-      const updatedData = { /* Updated data */ };
+      const updatedData = {
+        /* Updated data */
+      };
 
       await updateUserById(userId, updatedData);
 

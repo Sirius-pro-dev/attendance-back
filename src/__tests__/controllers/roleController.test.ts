@@ -1,10 +1,4 @@
-import {
-  createRole,
-  getAllRoles,
-  getRoleById,
-  updateRoleById,
-  deleteRoleById
-} from '../../controllers/roleController';  // Adjust the import path based on your project structure
+import { createRole, getAllRoles, getRoleById, updateRoleById, deleteRoleById } from '../../controllers/roleController'; // Adjust the import path based on your project structure
 import Role from '../../models/role';
 
 jest.mock('../../models/role', () => ({
@@ -14,7 +8,7 @@ jest.mock('../../models/role', () => ({
     find: jest.fn(),
     findById: jest.fn(),
     findByIdAndUpdate: jest.fn(),
-    findByIdAndRemove: jest.fn(),
+    findByIdAndRemove: jest.fn()
   }
 }));
 
@@ -28,7 +22,7 @@ describe('Role API functions', () => {
   //     const roleData = { name: 'John Doe', email: 'john@example.com' };
 
   //     const result = await createRole(roleData);
-  
+
   //     expect(Role).toHaveBeenCalledWith(roleData);  // Ensure Role was called with correct data
   //     // expect(result.data).toEqual(roleData);
   //   });
@@ -55,7 +49,9 @@ describe('Role API functions', () => {
   describe('updateRoleById', () => {
     it('should update a role by ID', async () => {
       const roleId = 'someRoleId';
-      const updatedData = { /* Updated data */ };
+      const updatedData = {
+        /* Updated data */
+      };
 
       await updateRoleById(roleId, updatedData);
 

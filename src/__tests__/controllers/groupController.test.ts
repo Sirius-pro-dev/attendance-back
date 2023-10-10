@@ -4,7 +4,7 @@ import {
   getGroupById,
   updateGroupById,
   deleteGroupById
-} from '../../controllers/groupController'; // Adjust the import path based on your project structure
+} from '../../controllers/groupController';
 import Group from '../../models/group';
 
 jest.mock('../../models/group', () => ({

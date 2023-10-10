@@ -1,4 +1,4 @@
-import { createRole, getAllRoles, getRoleById, updateRoleById, deleteRoleById } from '../../controllers/roleController'; // Adjust the import path based on your project structure
+import { createRole, getAllRoles, getRoleById, updateRoleById, deleteRoleById } from '../../controllers/roleController';
 import Role from '../../models/role';
 
 jest.mock('../../models/role', () => ({

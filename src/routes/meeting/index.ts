@@ -1,16 +1,16 @@
 import { generateQR } from './../../utils/qr/index';
 import {
-  createSession,
-  getSessionById,
-  updateSessionById,
-  deleteSessionById,
-  validateSessionData,
+  createMeeting,
+  getMeetingById,
+  updateMeetingById,
+  deleteMeetingById,
+  validateMeetingData,
   isTitleAlreadyInUse
-} from '../../controllers/sessionController';
+} from '../../controllers/meetingController';
 
 export default async function (fastify) {
   fastify.post('/', async (request, reply) => {
-    const validationErrors = validateSessionData(request.body);
+    const validationErrors = validateMeetingData(request.body);
     const isTitleTaken = await isTitleAlreadyInUse(request.body.title);
 
     if (validationErrors) {
@@ -23,24 +23,24 @@ export default async function (fastify) {
     //   return;
     // }
 
-    createSession(request.body);
+    createMeeting(request.body);
     reply.status(201).send({ message: 'Created' });
   });
   fastify.get('/:id', async (request, reply) => {
-    const sessionId = request.params.id;
-    const session = await getSessionById(sessionId);
+    const meetingId = request.params.id;
+    const meeting = await getMeetingById(meetingId);
 
-    if (session.length === 0) {
-      reply.status(404).send({ error: 'Session not found' });
+    if (meeting.length === 0) {
+      reply.status(404).send({ error: 'Meeting not found' });
       return;
     }
 
-    reply.status(200).send(session);
+    reply.status(200).send(meeting);
   });
   fastify.put('/:id', async (request, reply) => {
-    const sessionId = request.params.id;
-    const sessionBody = request.body;
-    const validationErrors = validateSessionData(sessionBody);
+    const meetingId = request.params.id;
+    const meetingBody = request.body;
+    const validationErrors = validateMeetingData(meetingBody);
     const isTitleTaken = await isTitleAlreadyInUse(request.body.title);
 
     if (validationErrors) {
@@ -53,21 +53,21 @@ export default async function (fastify) {
     //   return;
     // }
 
-    const updatedSession = await updateSessionById(sessionId, sessionBody);
+    const updatedMeeting = await updateMeetingById(meetingId, meetingBody);
 
-    if (!updatedSession) {
-      reply.status(404).send({ error: 'Session not found' });
+    if (!updatedMeeting) {
+      reply.status(404).send({ error: 'Meeting not found' });
       return;
     }
 
-    reply.status(200).send(updatedSession);
+    reply.status(200).send(updatedMeeting);
   });
   fastify.delete('/:id', async (request, reply) => {
-    const sessionId = request.params.id;
-    const deletedSession = await deleteSessionById(sessionId);
+    const meetingId = request.params.id;
+    const deletedMeeting = await deleteMeetingById(meetingId);
 
-    if (!deletedSession) {
-      reply.status(404).send({ error: 'Session not found' });
+    if (!deletedMeeting) {
+      reply.status(404).send({ error: 'Meeting not found' });
       return;
     }
 

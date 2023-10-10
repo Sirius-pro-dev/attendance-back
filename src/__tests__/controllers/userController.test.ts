@@ -1,4 +1,4 @@
-import { createUser, getAllUsers, getUserById, updateUserById, deleteUserById } from '../../controllers/userController'; // Adjust the import path based on your project structure
+import { createUser, getAllUsers, getUserById, updateUserById, deleteUserById } from '../../controllers/userController';
 import User from '../../models/user';
 
 jest.mock('../../models/user', () => ({

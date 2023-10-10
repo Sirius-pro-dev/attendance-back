@@ -1,13 +1,13 @@
 import {
-  createSession,
-  getAllSessions,
-  getSessionById,
-  updateSessionById,
-  deleteSessionById
-} from '../../controllers/sessionController'; // Adjust the import path based on your project structure
-import Session from '../../models/session';
+  createMeeting,
+  getAllMeetings,
+  getMeetingById,
+  updateMeetingById,
+  deleteMeetingById
+} from '../../controllers/meetingController';
+import Meeting from '../../models/meeting';
 
-jest.mock('../../models/session', () => ({
+jest.mock('../../models/meeting', () => ({
   __esModule: true,
   default: {
     constructor: jest.fn(),
@@ -17,60 +17,60 @@ jest.mock('../../models/session', () => ({
   }
 }));
 
-describe('Session API functions', () => {
+describe('Meeting API functions', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  // describe('createSession', () => {
-  //   it('should create a new session', async () => {
-  //     const sessionData = { name: 'John Doe', email: 'john@example.com' };
+  // describe('createMeeting', () => {
+  //   it('should create a new meeting', async () => {
+  //     const meetingData = { name: 'John Doe', email: 'john@example.com' };
 
-  //     const result = await createSession(sessionData);
+  //     const result = await createMeeting(meetingData);
 
-  //     expect(Session).toHaveBeenCalledWith(sessionData);  // Ensure Session was called with correct data
-  //     // expect(result.data).toEqual(sessionData);
+  //     expect(Meeting).toHaveBeenCalledWith(meetingData);  // Ensure Meeting was called with correct data
+  //     // expect(result.data).toEqual(meetingData);
   //   });
   // });
 
-  describe('getAllSessions', () => {
-    it('should get all sessions', async () => {
-      await getAllSessions();
+  describe('getAllMeetings', () => {
+    it('should get all meetings', async () => {
+      await getAllMeetings();
 
-      expect(Session.find).toHaveBeenCalledWith({}, { _id: 0, __v: 0 });
+      expect(Meeting.find).toHaveBeenCalledWith({}, { _id: 0, __v: 0 });
     });
   });
 
-  describe('getSessionById', () => {
-    it('should get a session by ID', async () => {
-      const sessionId = 'someSessionId';
+  describe('getMeetingById', () => {
+    it('should get a meeting by ID', async () => {
+      const meetingId = 'someMeetingId';
 
-      await getSessionById(sessionId);
+      await getMeetingById(meetingId);
 
-      expect(Session.find).toHaveBeenCalled();
+      expect(Meeting.find).toHaveBeenCalled();
     });
   });
 
-  describe('updateSessionById', () => {
-    it('should update a session by ID', async () => {
-      const sessionId = 'someSessionId';
+  describe('updateMeetingById', () => {
+    it('should update a meeting by ID', async () => {
+      const meetingId = 'someMeetingId';
       const updatedData = {
         /* Updated data */
       };
 
-      await updateSessionById(sessionId, updatedData);
+      await updateMeetingById(meetingId, updatedData);
 
-      expect(Session.findOne).toHaveBeenCalled();
+      expect(Meeting.findOne).toHaveBeenCalled();
     });
   });
 
-  describe('deleteSessionById', () => {
-    it('should delete a session by ID', async () => {
-      const sessionId = 'someSessionId';
+  describe('deleteMeetingById', () => {
+    it('should delete a meeting by ID', async () => {
+      const meetingId = 'someMeetingId';
 
-      await deleteSessionById(sessionId);
+      await deleteMeetingById(meetingId);
 
-      expect(Session.findOne).toHaveBeenCalled();
+      expect(Meeting.findOne).toHaveBeenCalled();
     });
   });
 });

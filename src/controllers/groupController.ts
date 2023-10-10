@@ -2,7 +2,7 @@ import Group from '../models/group';
 
 type Group = {
   name?: string;
-  sessions?: string;
+  meetings?: string;
   users?: string;
 };
 
@@ -45,8 +45,8 @@ export const validateGroupData = groupData => {
   if (!groupData.name) {
     errors.name = 'Name is required';
   }
-  // if (!groupData.sessions) {
-  //   errors.sessions = 'Sessions is required';
+  // if (!groupData.meetings) {
+  //   errors.meetings = 'Meetings is required';
   // }
   // if (!groupData.users) {
   //   errors.users = 'Users is required';

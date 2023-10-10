@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 
 const groupSchema = new mongoose.Schema({
   name: String,
-  sessions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Session' }],
+  meetings: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Meeting' }],
   users: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   groupId: {
     type: String,

@@ -1,7 +1,7 @@
 import Attending from '../models/attending';
 
 type Attending = {
-  session?: string;
+  meeting?: string;
   user?: string;
   joined_at?: string;
 };
@@ -42,8 +42,8 @@ export const deleteAttendingById = async id => {
 export const validateAttendingData = attendingData => {
   const errors: Attending = {};
 
-  // if (!attendingData.session) {
-  //   errors.session = 'Session is required';
+  // if (!attendingData.meeting) {
+  //   errors.meeting = 'Meeting is required';
   // }
   // if (!attendingData.user) {
   //   errors.user = 'User is required';

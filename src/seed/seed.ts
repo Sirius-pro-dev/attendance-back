@@ -1,6 +1,6 @@
 import Group from '../models/group';
 import User from '../models/user';
-import Session from '../models/session';
+import Meeting from '../models/meeting';
 import Attending from '../models/attending';
 import Role from '../models/role';
 
@@ -62,32 +62,32 @@ const seed = async fastify => {
     await group.save();
     fastify.log.info('groups are created');
 
-    const session1 = new Session({
+    const meeting1 = new Meeting({
       title: 'JS разработка',
       timeFrom: new Date(2023, 9, 22, 18, 30, 0),
       timeTo: new Date(2023, 9, 22, 20, 0, 0),
       author: teacher,
       group: group
     });
-    await session1.save();
-    const session2 = new Session({
+    await meeting1.save();
+    const meeting2 = new Meeting({
       title: 'Как писать код красиво',
       timeFrom: new Date(2023, 11, 1, 6, 30, 0),
       timeTo: new Date(2023, 11, 1, 9, 0, 0),
       author: teacher,
       group: group
     });
-    await session2.save();
-    fastify.log.info('sessions are created');
+    await meeting2.save();
+    fastify.log.info('meetings are created');
 
     const attendance1 = new Attending({
-      session: session1,
+      meeting: meeting1,
       user: user1,
       joined_at: new Date(2023, 9, 22, 18, 30, 10)
     });
     await attendance1.save();
     const attendance2 = new Attending({
-      session: session1,
+      meeting: meeting1,
       user: user2,
       joined_at: new Date(2023, 9, 22, 18, 35, 21)
     });

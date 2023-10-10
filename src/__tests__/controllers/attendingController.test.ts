@@ -4,7 +4,7 @@ import {
   getAttendingById,
   updateAttendingById,
   deleteAttendingById
-} from '../../controllers/attendingController'; // Adjust the import path based on your project structure
+} from '../../controllers/attendingController'; 
 import Attending from '../../models/attending';
 
 jest.mock('../../models/attending', () => ({
@@ -57,7 +57,6 @@ describe('Attending API functions', () => {
     it('should update a attending by ID', async () => {
       const attendingId = 'someAttendingId';
       const updatedData = {
-        /* Updated data */
       };
 
       await updateAttendingById(attendingId, updatedData);

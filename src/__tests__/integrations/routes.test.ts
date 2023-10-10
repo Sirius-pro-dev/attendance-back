@@ -3,7 +3,7 @@ import app from '../../server';
 import User from '../../models/user';
 import Attending from '../../models/attending';
 import Group from '../../models/group';
-import Session from '../../models/session';
+import Meeting from '../../models/meeting';
 import { getAllUsers } from '../../controllers/userController';
 
 describe('Test routes', () => {
@@ -20,13 +20,13 @@ describe('Test routes', () => {
     });
   });
   describe('QR', () => {
-    describe('GET /session/QRCode', () => {
+    describe('GET /meeting/QRCode', () => {
       it('correct', async () => {
         const response = await app.inject({
           method: 'GET',
-          url: '/session/QRCode',
+          url: '/meeting/QRCode',
           headers: {
-            url: 'http://testurl:testport/',
+            url: 'http://testurl:testport/'
           }
         });
 
@@ -193,13 +193,13 @@ describe('Test routes', () => {
 
     describe('POST /attending/:id', () => {
       it('correct', async () => {
-        const sessionId = (await Session.findOne()).sessionId;
+        const meetingId = (await Meeting.findOne()).meetingId;
         const userId = (await User.findOne()).userId;
         const response = await app.inject({
           method: 'POST',
           url: '/attending',
           body: {
-            sessionId: sessionId,
+            meetingId: meetingId,
             userId: userId,
             joined_at: new Date(2023, 9, 22, 18, 30, 10)
           }
@@ -212,7 +212,7 @@ describe('Test routes', () => {
           method: 'POST',
           url: '/attending',
           body: {
-            sessionId: null,
+            meetingId: null,
             userId: null,
             joined_at: null
           }
@@ -224,13 +224,13 @@ describe('Test routes', () => {
     describe('PUT /attending/:id', () => {
       it('correct', async () => {
         const attending = await Attending.findOne();
-        const sessionId = (await Session.findOne()).sessionId;
+        const meetingId = (await Meeting.findOne()).meetingId;
 
         const response = await app.inject({
           method: 'PUT',
           url: `/attending/${attending.attendingId}`,
           body: {
-            sessionId: sessionId,
+            meetingId: meetingId,
             userId: null,
             joined_at: new Date(2023, 9, 22, 18, 30, 10)
           }
@@ -245,7 +245,7 @@ describe('Test routes', () => {
           method: 'PUT',
           url: `/attending/${attending.attendingId}`,
           body: {
-            sessionId: null,
+            meetingId: null,
             userId: null,
             joined_at: null
           }
@@ -387,24 +387,24 @@ describe('Test routes', () => {
     });
   });
 
-  describe('session', () => {
-    describe('GET /sessions', () => {
+  describe('meeting', () => {
+    describe('GET /meetings', () => {
       it('correct', async () => {
         const response = await app.inject({
           method: 'GET',
-          url: '/sessions'
+          url: '/meetings'
         });
 
         expect(response.statusCode).toBe(200);
       });
     });
 
-    describe('GET /session/:id', () => {
+    describe('GET /meeting/:id', () => {
       it('correct', async () => {
-        const id = (await Session.findOne()).sessionId;
+        const id = (await Meeting.findOne()).meetingId;
         const response = await app.inject({
           method: 'GET',
-          url: `/session/${id}`
+          url: `/meeting/${id}`
         });
 
         expect(response.statusCode).toBe(200);
@@ -413,7 +413,7 @@ describe('Test routes', () => {
       it('404 error', async () => {
         const response = await app.inject({
           method: 'GET',
-          url: '/session/1'
+          url: '/meeting/1'
         });
 
         expect(response.statusCode).toBe(404);
@@ -432,13 +432,13 @@ describe('Test routes', () => {
       });
     });
 
-    describe('POST /session/:id', () => {
+    describe('POST /meeting/:id', () => {
       it('correct', async () => {
         const authorId = (await User.findOne()).userId;
         const groupId = (await Group.findOne()).groupId;
         const response = await app.inject({
           method: 'POST',
-          url: '/session',
+          url: '/meeting',
           body: {
             title: 'JS разработка',
             timeFrom: new Date(2023, 9, 22, 18, 30, 0),
@@ -453,7 +453,7 @@ describe('Test routes', () => {
       it('400 error', async () => {
         const response = await app.inject({
           method: 'POST',
-          url: '/session',
+          url: '/meeting',
           body: {
             title: null,
             timeFrom: null,
@@ -466,14 +466,14 @@ describe('Test routes', () => {
       });
     });
 
-    describe('PUT /session/:id', () => {
+    describe('PUT /meeting/:id', () => {
       it('correct', async () => {
-        const id = (await Session.findOne()).sessionId;
+        const id = (await Meeting.findOne()).meetingId;
         const authorId = (await User.findOne()).userId;
         const groupId = (await Group.findOne()).groupId;
         const response = await app.inject({
           method: 'PUT',
-          url: `/session/${id}`,
+          url: `/meeting/${id}`,
           body: {
             title: 'JS разработка',
             timeFrom: new Date(2023, 9, 22, 18, 30, 0),
@@ -486,10 +486,10 @@ describe('Test routes', () => {
       });
 
       it('400 error', async () => {
-        const id = (await Session.findOne()).sessionId;
+        const id = (await Meeting.findOne()).meetingId;
         const response = await app.inject({
           method: 'PUT',
-          url: `/session/${id}`,
+          url: `/meeting/${id}`,
           body: {
             title: null,
             timeFrom: null,
@@ -502,12 +502,12 @@ describe('Test routes', () => {
       });
     });
 
-    describe('DELETE /session/:id', () => {
+    describe('DELETE /meeting/:id', () => {
       it('correct', async () => {
-        const id = (await Session.findOne()).sessionId;
+        const id = (await Meeting.findOne()).meetingId;
         const response = await app.inject({
           method: 'DELETE',
-          url: `/session/${id}`
+          url: `/meeting/${id}`
         });
 
         expect(response.statusCode).toBe(200);
@@ -516,7 +516,7 @@ describe('Test routes', () => {
       it('404 error', async () => {
         const response = await app.inject({
           method: 'DELETE',
-          url: '/session/1'
+          url: '/meeting/1'
         });
 
         expect(response.statusCode).toBe(404);

@@ -1,10 +1,18 @@
-version: "3"
+version: '3'
 
 services:
-  sirius-server:
+  server:
     build: .
+    container_name: attendance-server
     restart: always
     ports:
-      - 3002:3002
+      - '${SIRIUS_X_ATTENDANCE_PORT}:${SIRIUS_X_ATTENDANCE_PORT}'
     environment:
       - TZ=Europe/Moscow
+    depends_on:
+      - mongo
+  mongo:
+    image: mongo:4.4.23
+    container_name: attendance-db
+    ports:
+      - '${SIRIUS_X_ATTENDANCE_DB_PORT}:${SIRIUS_X_ATTENDANCE_DB_PORT}'

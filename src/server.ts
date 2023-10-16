@@ -4,8 +4,8 @@ import fastifyJwt from '@fastify/jwt';
 import Fastify from 'fastify';
 import path from 'node:path';
 
-// import seeds from './seed/seed';
-// import { connect } from './connect';
+import seeds from './seed/seed';
+import { connect } from './connect';
 import { loggerConfig } from './configs/logger';
 import { authenticationConfig } from './configs/authentication';
 import { authenticateToken } from './utils/auth';
@@ -51,14 +51,14 @@ const start = async () => {
 
 start();
 
-// const getDisconnectFromDB = connect(fastify);
+const getDisconnectFromDB = connect(fastify);
 
-// seeds(fastify);
+seeds(fastify);
 
 const graceFulShutDown = async () => {
   await fastify.close();
-  // const disconnectFromDB = await getDisconnectFromDB;
-  // await disconnectFromDB();
+  const disconnectFromDB = await getDisconnectFromDB;
+  await disconnectFromDB();
   process.exit(0);
 };
 

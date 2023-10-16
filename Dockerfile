@@ -10,6 +10,6 @@ COPY ./package-lock.json /usr/src/app/package-lock.json
 
 RUN npm ci --omit=dev
 
-EXPOSE 3010
+EXPOSE 3002
 
 CMD ["npm", "run", "up:prod"]

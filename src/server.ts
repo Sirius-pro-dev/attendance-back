@@ -38,11 +38,14 @@ fastify.setErrorHandler(function (error, request, reply) {
   reply.status(500).send({ error: 'Internal Server Error' });
 });
 
-const start = async () => {
+const start = () => {
   try {
-    await fastify.listen({
-      port: Number(process.env.SIRIUS_X_ATTENDANCE_PORT) || 3002
+    fastify.listen({
+      port: Number(process.env.SIRIUS_X_ATTENDANCE_PORT) || 3002,
+      host: '0.0.0.0'
     });
+
+    fastify.log.info(`listening on port ${Number(process.env.SIRIUS_X_ATTENDANCE_PORT) || 3002}`);
   } catch (err) {
     fastify.log.error(err);
     process.exit(1);
@@ -67,6 +70,10 @@ process.on('SIGTERM', graceFulShutDown);
 
 fastify.register(autoload, {
   dir: path.join(__dirname, 'routes')
+});
+
+fastify.get('/hc', (req, rep) => {
+  return { ok: true, engine: 'fastify' };
 });
 
 export default fastify;

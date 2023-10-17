@@ -1,4 +1,4 @@
-FROM 'node:18'
+FROM node:18
 
 RUN mkdir -p /usr/src/app/dist/
 WORKDIR /usr/src/app/
@@ -13,4 +13,3 @@ RUN npm ci --omit=dev
 EXPOSE 3002
 
 CMD ["npm", "run", "up:prod"]
-  

@@ -10,7 +10,7 @@
     "up:prod": "node dist/src/server",
     "up:dev": "nodemon",
     "deploy:stop": "docker compose down --remove-orphans",
-    "deploy:start": "docker compose up -d",
+    "deploy:start": "npm run build && docker compose up --build",
     "rebuild": "npm run deploy:stop && npm run deploy:start",
     "lint": "eslint ./src/",
     "format": "prettier --write 'src/**/*.{ts,md,json}' --config ./.prettierrc"
@@ -22,6 +22,7 @@
     "@jest/globals": "^29.7.0",
     "@types/bcrypt": "^5.0.0",
     "@types/jest": "^29.5.5",
+    "@types/mongoose": "^5.11.97",
     "@types/node": "^20.6.2",
     "@types/qrcode": "^1.5.2",
     "@types/supertest": "^2.0.14",

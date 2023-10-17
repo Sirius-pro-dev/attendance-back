@@ -1,10 +1,39 @@
-version: "3"
+version: '3.8'
 
 services:
-  sirius-server:
+  attendance-db:
+    env_file: ./.env
+    image: mongo:4.4.23
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${SIRIUS_X_ATTENDANCE_MONGO_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${SIRIUS_X_ATTENDANCE_MONGO_USERNAME}
+    ports:
+      - ${SIRIUS_X_ATTENDANCE_DB_PORT}:27017
+    restart: always
+    volumes:
+      - sirius_volume:/data/db
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    networks:
+      - attendance-net
+
+  attendance-server:
+    env_file: .env
     build: .
     restart: always
     ports:
       - 3002:3002
     environment:
-      - TZ=Europe/Moscow
+      SIRIUS_X_ATTENDANCE_MONGO_HOST: host.docker.internal
+    depends_on:
+      - attendance-db
+    networks:
+      - attendance-net
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+networks:
+  attendance-net:
+    driver: bridge
+
+volumes:
+  sirius_volume:

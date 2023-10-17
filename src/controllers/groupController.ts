@@ -16,7 +16,7 @@ export const getAllGroups = async () => {
 };
 
 export const getGroupById = async id => {
-  return await Group.find({ groupId: id }, { _id: 0, __v: 0 });
+  return await Group.findOne({ groupId: id }, { _id: 0, __v: 0 });
 };
 
 export const updateGroupById = async (id, body) => {

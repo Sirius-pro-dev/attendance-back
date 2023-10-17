@@ -16,7 +16,7 @@ export const getAllAttendings = async () => {
 };
 
 export const getAttendingById = async id => {
-  return await Attending.find({ attendingId: id }, { _id: 0, __v: 0 });
+  return await Attending.findOne({ attendingId: id }, { _id: 0, __v: 0 });
 };
 
 export const updateAttendingById = async (id, body) => {

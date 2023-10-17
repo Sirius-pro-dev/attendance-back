@@ -18,19 +18,19 @@ export default async function (fastify) {
       return;
     }
 
-    // if (isTitleTaken) {
-    //   reply.status(409).send({ error: 'Title is already in use' });
-    //   return;
-    // }
+    if (isTitleTaken) {
+      reply.status(409).send({ error: 'Title is already in use' });
+      return;
+    }
 
     createMeeting(request.body);
     reply.status(201).send({ message: 'Created' });
   });
   fastify.get('/:id', async (request, reply) => {
-    const meetingId = request.params.id;
+    const meetingId = request.query.id;
     const meeting = await getMeetingById(meetingId);
 
-    if (meeting.length === 0) {
+    if (!meeting) {
       reply.status(404).send({ error: 'Meeting not found' });
       return;
     }
@@ -38,7 +38,7 @@ export default async function (fastify) {
     reply.status(200).send(meeting);
   });
   fastify.put('/:id', async (request, reply) => {
-    const meetingId = request.params.id;
+    const meetingId = request.query.id;
     const meetingBody = request.body;
     const validationErrors = validateMeetingData(meetingBody);
     const isTitleTaken = await isTitleAlreadyInUse(request.body.title);
@@ -48,10 +48,10 @@ export default async function (fastify) {
       return;
     }
 
-    // if (isTitleTaken) {
-    //   reply.status(409).send({ error: 'Title is already in use' });
-    //   return;
-    // }
+    if (isTitleTaken) {
+      reply.status(409).send({ error: 'Title is already in use' });
+      return;
+    }
 
     const updatedMeeting = await updateMeetingById(meetingId, meetingBody);
 
@@ -63,7 +63,7 @@ export default async function (fastify) {
     reply.status(200).send(updatedMeeting);
   });
   fastify.delete('/:id', async (request, reply) => {
-    const meetingId = request.params.id;
+    const meetingId = request.query.id;
     const deletedMeeting = await deleteMeetingById(meetingId);
 
     if (!deletedMeeting) {

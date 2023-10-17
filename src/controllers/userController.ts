@@ -19,7 +19,7 @@ export const getAllUsers = async () => {
 };
 
 export const getUserById = async id => {
-  return await User.find({ userId: id }, { _id: 0, __v: 0 });
+  return await User.findOne({ userId: id }, { _id: 0, __v: 0 });
 };
 
 export const updateUserById = async (id, body) => {

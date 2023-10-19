@@ -26,7 +26,7 @@ export default async function (fastify) {
     reply.status(201).send({ message: 'Created' });
   });
   fastify.get('/:id', async (request, reply) => {
-    const groupId = request.query.id;
+    const groupId = request.params.id;
     const group = await getGroupById(groupId);
 
     if (!group) {
@@ -37,7 +37,7 @@ export default async function (fastify) {
     reply.status(200).send(group);
   });
   fastify.put('/:id', async (request, reply) => {
-    const groupId = request.query.id;
+    const groupId = request.params.id;
     const groupBody = request.body;
     const validationErrors = validateGroupData(groupBody);
     const isNameTaken = await isNameAlreadyInUse(request.body.name);
@@ -62,7 +62,7 @@ export default async function (fastify) {
     reply.status(200).send(updatedGroup);
   });
   fastify.delete('/:id', async (request, reply) => {
-    const groupId = request.query.id;
+    const groupId = request.params.id;
     const deletedGroup = await deleteGroupById(groupId);
 
     if (!deletedGroup) {

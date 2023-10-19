@@ -49,7 +49,7 @@ describe('Group API functions', () => {
 
       await getGroupById(groupId);
 
-      expect(Group.find).toHaveBeenCalled();
+      expect(Group.findOne).toHaveBeenCalled();
     });
   });
 

@@ -27,7 +27,7 @@ export default async function (fastify) {
     reply.status(201).send({ message: 'Created' });
   });
   fastify.get('/:id', async (request, reply) => {
-    const meetingId = request.query.id;
+    const meetingId = request.params.id;
     const meeting = await getMeetingById(meetingId);
 
     if (!meeting) {
@@ -38,7 +38,7 @@ export default async function (fastify) {
     reply.status(200).send(meeting);
   });
   fastify.put('/:id', async (request, reply) => {
-    const meetingId = request.query.id;
+    const meetingId = request.params.id;
     const meetingBody = request.body;
     const validationErrors = validateMeetingData(meetingBody);
     const isTitleTaken = await isTitleAlreadyInUse(request.body.title);
@@ -63,7 +63,7 @@ export default async function (fastify) {
     reply.status(200).send(updatedMeeting);
   });
   fastify.delete('/:id', async (request, reply) => {
-    const meetingId = request.query.id;
+    const meetingId = request.params.id;
     const deletedMeeting = await deleteMeetingById(meetingId);
 
     if (!deletedMeeting) {

@@ -26,7 +26,7 @@ export default async function (fastify) {
     reply.status(201).send({ message: 'Created' });
   });
   fastify.get('/:id', async (request, reply) => {
-    const attendingId = request.query.id;
+    const attendingId = request.params.id;
     const attending = await getAttendingById(attendingId);
 
     if (!attending) {
@@ -37,7 +37,7 @@ export default async function (fastify) {
     reply.status(200).send(attending);
   });
   fastify.put('/:id', async (request, reply) => {
-    const attendingId = request.query.id;
+    const attendingId = request.params.id;
     const attendingBody = request.body;
     const validationErrors = validateAttendingData(attendingBody);
     const isNameTaken = await isUserAlreadyInUse(request.body.user);
@@ -62,7 +62,7 @@ export default async function (fastify) {
     reply.status(200).send(updatedAttending);
   });
   fastify.delete('/:id', async (request, reply) => {
-    const attendingId = request.query.id;
+    const attendingId = request.params.id;
     const deletedAttending = await deleteAttendingById(attendingId);
 
     if (!deletedAttending) {

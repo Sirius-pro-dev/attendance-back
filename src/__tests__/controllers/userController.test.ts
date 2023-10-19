@@ -43,7 +43,7 @@ describe('User API functions', () => {
 
       await getUserById(userId);
 
-      expect(User.find).toHaveBeenCalled();
+      expect(User.findOne).toHaveBeenCalled();
     });
   });
 

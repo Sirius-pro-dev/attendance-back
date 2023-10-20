@@ -10,15 +10,9 @@ import {
 export default async function (fastify) {
   fastify.post('/', async (request, reply) => {
     const validationErrors = validateAttendingData(request.body);
-    const isUserTaken = await isUserAlreadyInUse(request.body.user);
 
     if (validationErrors) {
       reply.status(400).send({ error: 'Invalid Data', details: validationErrors });
-      return;
-    }
-
-    if (isUserTaken) {
-      reply.status(409).send({ error: 'User is already in use' });
       return;
     }
 
@@ -40,15 +34,15 @@ export default async function (fastify) {
     const attendingId = request.params.id;
     const attendingBody = request.body;
     const validationErrors = validateAttendingData(attendingBody);
-    const isNameTaken = await isUserAlreadyInUse(request.body.user);
+    const isUserTaken = await isUserAlreadyInUse(request.body.user);
 
     if (validationErrors) {
       reply.status(400).send({ error: 'Invalid Data', details: validationErrors });
       return;
     }
 
-    if (isNameTaken) {
-      reply.status(409).send({ error: 'Name is already in use' });
+    if (isUserTaken) {
+      reply.status(409).send({ error: 'User is already in use' });
       return;
     }
 

@@ -42,12 +42,12 @@ export const deleteAttendingById = async id => {
 export const validateAttendingData = attendingData => {
   const errors: Attending = {};
 
-  // if (!attendingData.meeting) {
-  //   errors.meeting = 'Meeting is required';
-  // }
-  // if (!attendingData.user) {
-  //   errors.user = 'User is required';
-  // }
+  if (!attendingData.meeting) {
+    errors.meeting = 'Meeting is required';
+  }
+  if (!attendingData.user) {
+    errors.user = 'User is required';
+  }
   if (!attendingData.joined_at) {
     errors.joined_at = 'joined_at is required';
   }

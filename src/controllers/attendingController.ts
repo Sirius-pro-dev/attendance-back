@@ -42,10 +42,10 @@ export const deleteAttendingById = async id => {
 export const validateAttendingData = attendingData => {
   const errors: Attending = {};
 
-  if (!attendingData.meeting) {
+  if (!attendingData.meetingId) {
     errors.meeting = 'Meeting is required';
   }
-  if (!attendingData.user) {
+  if (!attendingData.userId) {
     errors.user = 'User is required';
   }
   if (!attendingData.joined_at) {
@@ -56,6 +56,7 @@ export const validateAttendingData = attendingData => {
 };
 
 export const isUserAlreadyInUse = async user => {
-  const attending = await Attending.findOne({ user });
-  return attending !== null;
+  // const attending = await Attending.findOne({ user });
+  // return attending !== null;
+  return false
 };

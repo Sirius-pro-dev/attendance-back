@@ -17,10 +17,10 @@ export default async function (fastify) {
       return;
     }
 
-    // if (isEmailTaken) {
-    //   reply.status(409).send({ error: 'Email is already in use' });
-    //   return;
-    // }
+    if (isEmailTaken) {
+      reply.status(409).send({ error: 'Email is already in use' });
+      return;
+    }
 
     createUser(request.body);
     reply.status(201).send({ message: 'Created' });
@@ -28,7 +28,8 @@ export default async function (fastify) {
   fastify.get('/:id', async (request, reply) => {
     const userId = request.params.id;
     const user = await getUserById(userId);
-    if (user.length === 0) {
+    
+    if (!user) {
       reply.status(404).send({ error: 'User not found' });
       return;
     }
@@ -46,10 +47,10 @@ export default async function (fastify) {
       return;
     }
 
-    // if (isEmailTaken) {
-    //   reply.status(409).send({ error: 'Email is already in use' });
-    //   return;
-    // }
+    if (isEmailTaken) {
+      reply.status(409).send({ error: 'Email is already in use' });
+      return;
+    }
 
     const updatedUser = await updateUserById(userId, userBody);
 

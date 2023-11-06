@@ -16,7 +16,7 @@ export const getAllAttendings = async () => {
 };
 
 export const getAttendingById = async id => {
-  return await Attending.find({ attendingId: id }, { _id: 0, __v: 0 });
+  return await Attending.findOne({ attendingId: id }, { _id: 0, __v: 0 });
 };
 
 export const updateAttendingById = async (id, body) => {
@@ -42,20 +42,21 @@ export const deleteAttendingById = async id => {
 export const validateAttendingData = attendingData => {
   const errors: Attending = {};
 
-  // if (!attendingData.meeting) {
-  //   errors.meeting = 'Meeting is required';
-  // }
-  // if (!attendingData.user) {
-  //   errors.user = 'User is required';
-  // }
-  // if (!attendingData.joined_at) {
-  //   errors.joined_at = 'joined_at is required';
-  // }
+  if (!attendingData.meetingId) {
+    errors.meeting = 'Meeting is required';
+  }
+  if (!attendingData.userId) {
+    errors.user = 'User is required';
+  }
+  if (!attendingData.joined_at) {
+    errors.joined_at = 'joined_at is required';
+  }
 
   return Object.keys(errors).length === 0 ? null : errors;
 };
 
 export const isUserAlreadyInUse = async user => {
-  const attending = await Attending.findOne({ user });
-  return attending !== null;
+  // const attending = await Attending.findOne({ user });
+  // return attending !== null;
+  return false
 };

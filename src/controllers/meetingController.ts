@@ -19,7 +19,7 @@ export const getAllMeetings = async () => {
 };
 
 export const getMeetingById = async id => {
-  return await Meeting.find({ meetingId: id }, { _id: 0, __v: 0 });
+  return await Meeting.findOne({ meetingId: id }, { _id: 0, __v: 0 });
 };
 
 export const updateMeetingById = async (id, body) => {

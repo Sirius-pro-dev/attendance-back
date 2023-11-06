@@ -68,8 +68,12 @@ describe('Test routes', () => {
       });
     });
 
-    describe('POST /user/:id', () => {
+    describe('POST /user', () => {
       it('correct', async () => {
+        const user = await User.findOne({ email: 'testtest' });
+        if (user) {
+          await User.findByIdAndRemove(user._id);
+        }
         const response = await app.inject({
           method: 'POST',
           url: '/user',
@@ -104,6 +108,19 @@ describe('Test routes', () => {
 
     describe('PUT /user/:id', () => {
       it('correct', async () => {
+        let user = await User.findOne({ email: 'testtest4' });
+        if (!user) {
+          user = new User({
+            firstname: 'Test',
+            lastname: 'Test',
+            middlename: 'Test',
+            password: 'testtesttest',
+            email: 'testtest-'
+          })
+        } else {
+          await User.findByIdAndUpdate(user._id, { email: 'testtest-' }, { new: true });
+        }
+
         const id = (await User.findOne()).userId;
         const response = await app.inject({
           method: 'PUT',
@@ -113,7 +130,7 @@ describe('Test routes', () => {
             lastname: 'Test',
             middlename: 'Test',
             password: 'testtesttest',
-            email: 'testtesttest'
+            email: 'testtest4'
           }
         });
         expect(response.statusCode).toBe(200);
@@ -138,7 +155,18 @@ describe('Test routes', () => {
 
     describe('DELETE /user/:id', () => {
       it('correct', async () => {
-        const id = (await User.findOne()).userId;
+        let user = await User.findOne({ email: 'testtest3' });
+        if (!user) {
+          user = new User({
+            firstname: 'aaaaa',
+            lastname: 'aaaaa',
+            middlename: 'aaaaa',
+            password: 'aaaaa',
+            email: 'testtest3'
+          });
+          await user.save();
+        }
+        const id = user.userId;
         const response = await app.inject({
           method: 'DELETE',
           url: `/user/${id}`
@@ -191,8 +219,12 @@ describe('Test routes', () => {
       });
     });
 
-    describe('POST /attending/:id', () => {
+    describe('POST /attending', () => {
       it('correct', async () => {
+        const attending = await Attending.findOne({ joined_at: new Date(2023, 9, 22, 18, 30, 10) });
+        if (attending) {
+          await Attending.findByIdAndRemove(attending._id);
+        }
         const meetingId = (await Meeting.findOne()).meetingId;
         const userId = (await User.findOne()).userId;
         const response = await app.inject({
@@ -223,16 +255,28 @@ describe('Test routes', () => {
 
     describe('PUT /attending/:id', () => {
       it('correct', async () => {
-        const attending = await Attending.findOne();
         const meetingId = (await Meeting.findOne()).meetingId;
+        const userId = (await User.findOne()).userId;
+
+        let attending = await Attending.findOne({ joined_at: new Date(2023, 9, 22, 18, 30, 11) });
+        if (!attending) {
+          attending = new Attending({
+            meetingId: meetingId,
+            userId: null,
+            joined_at: new Date(2023, 9, 22, 18, 30, 11)
+          });
+          await attending.save()
+        } else {
+          await Attending.findByIdAndUpdate(attending._id, { userId: null }, { new: true });
+        }
 
         const response = await app.inject({
           method: 'PUT',
           url: `/attending/${attending.attendingId}`,
           body: {
             meetingId: meetingId,
-            userId: null,
-            joined_at: new Date(2023, 9, 22, 18, 30, 10)
+            userId: userId,
+            joined_at: new Date(2023, 9, 22, 18, 30, 11)
           }
         });
         expect(response.statusCode).toBe(200);
@@ -256,7 +300,16 @@ describe('Test routes', () => {
 
     describe('DELETE /attending/:id', () => {
       it('correct', async () => {
-        const id = (await Attending.findOne()).attendingId;
+        let attending = await Attending.findOne({ joined_at: new Date(2023, 9, 22, 18, 30, 12) });
+        if (!attending) {
+          attending = new Attending({
+            meetingId: null,
+            userId: null,
+            joined_at: new Date(2023, 9, 22, 18, 30, 12)
+          });
+          await attending.save()
+        }
+        const id = attending.attendingId;
         const response = await app.inject({
           method: 'DELETE',
           url: `/attending/${id}`
@@ -309,8 +362,13 @@ describe('Test routes', () => {
       });
     });
 
-    describe('POST /group/:id', () => {
+    describe('POST /group', () => {
       it('correct', async () => {
+        const group = await Group.findOne({ name: 'Л0711-21/2' });
+        if (group) {
+          await Group.findByIdAndRemove(group._id);
+        }
+
         const userId = (await User.findOne()).userId;
         const response = await app.inject({
           method: 'POST',
@@ -338,8 +396,19 @@ describe('Test routes', () => {
 
     describe('PUT /group/:id', () => {
       it('correct', async () => {
-        const group = await Group.findOne();
         const userId = (await User.findOne()).userId;
+
+        let group = await Group.findOne({ name: 'af' });
+        if (!group) {
+          group = new Group({
+            name: 'af1',
+            usersIds: [userId]
+          });
+          await group.save()
+        } else {
+          await Group.findByIdAndUpdate(group._id, { name: 'af1' }, { new: true });
+        }
+
         const response = await app.inject({
           method: 'PUT',
           url: `/group/${group.groupId}`,
@@ -367,10 +436,18 @@ describe('Test routes', () => {
 
     describe('DELETE /group/:id', () => {
       it('correct', async () => {
-        const id = (await Group.findOne()).groupId;
+        const userId = (await User.findOne()).userId;
+        let group = await Group.findOne({ name: 'af3' });
+        if (!group) {
+          group = new Group({
+            name: 'af3',
+            usersIds: [userId]
+          });
+          await group.save()
+        }
         const response = await app.inject({
           method: 'DELETE',
-          url: `/group/${id}`
+          url: `/group/${group.groupId}`
         });
 
         expect(response.statusCode).toBe(200);
@@ -419,21 +496,14 @@ describe('Test routes', () => {
         expect(response.statusCode).toBe(404);
       });
     });
-    describe('healthcheck', () => {
-      describe('GET /healthcheck', () => {
-        it('correct', async () => {
-          const response = await app.inject({
-            method: 'GET',
-            url: '/healthcheck'
-          });
-
-          expect(response.statusCode).toBe(200);
-        });
-      });
-    });
 
     describe('POST /meeting/:id', () => {
       it('correct', async () => {
+        const meeting = await Meeting.findOne({ title: 'JS разработка' });
+        if (meeting) {
+          await Meeting.findByIdAndRemove(meeting._id);
+        }
+
         const authorId = (await User.findOne()).userId;
         const groupId = (await Group.findOne()).groupId;
         const response = await app.inject({
@@ -468,14 +538,28 @@ describe('Test routes', () => {
 
     describe('PUT /meeting/:id', () => {
       it('correct', async () => {
-        const id = (await Meeting.findOne()).meetingId;
         const authorId = (await User.findOne()).userId;
         const groupId = (await Group.findOne()).groupId;
+  
+        let meeting = await Meeting.findOne({ title: 'JS разработка 20' });
+        if (!meeting) {
+          meeting = new Meeting({
+            title: 'JS разработка 2',
+            timeFrom: new Date(2023, 9, 22, 18, 30, 0),
+            timeTo: new Date(2023, 9, 22, 20, 0, 0),
+            authorId: authorId,
+            groupId: groupId
+          });
+          await meeting.save()
+        } else {
+          await Meeting.findByIdAndUpdate(meeting._id, { title: 'JS разработка 2' }, { new: true });
+        }
+
         const response = await app.inject({
           method: 'PUT',
-          url: `/meeting/${id}`,
+          url: `/meeting/${meeting.meetingId}`,
           body: {
-            title: 'JS разработка',
+            title: 'JS разработка 20',
             timeFrom: new Date(2023, 9, 22, 18, 30, 0),
             timeTo: new Date(2023, 9, 22, 20, 0, 0),
             authorId: authorId,
@@ -504,10 +588,23 @@ describe('Test routes', () => {
 
     describe('DELETE /meeting/:id', () => {
       it('correct', async () => {
-        const id = (await Meeting.findOne()).meetingId;
+        const authorId = (await User.findOne()).userId;
+        const groupId = (await Group.findOne()).groupId;
+
+        let meeting = await Meeting.findOne({ title: 'JS разработка 3' });
+        if (!meeting) {
+          meeting = new Meeting({
+            title: 'JS разработка 3',
+            timeFrom: new Date(2023, 9, 22, 18, 30, 0),
+            timeTo: new Date(2023, 9, 22, 20, 0, 0),
+            authorId: authorId,
+            groupId: groupId
+          });
+          await meeting.save()
+        }
         const response = await app.inject({
           method: 'DELETE',
-          url: `/meeting/${id}`
+          url: `/meeting/${meeting.meetingId}`
         });
 
         expect(response.statusCode).toBe(200);

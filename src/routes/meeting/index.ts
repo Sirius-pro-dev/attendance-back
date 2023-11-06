@@ -18,10 +18,10 @@ export default async function (fastify) {
       return;
     }
 
-    // if (isTitleTaken) {
-    //   reply.status(409).send({ error: 'Title is already in use' });
-    //   return;
-    // }
+    if (isTitleTaken) {
+      reply.status(409).send({ error: 'Title is already in use' });
+      return;
+    }
 
     createMeeting(request.body);
     reply.status(201).send({ message: 'Created' });
@@ -30,7 +30,7 @@ export default async function (fastify) {
     const meetingId = request.params.id;
     const meeting = await getMeetingById(meetingId);
 
-    if (meeting.length === 0) {
+    if (!meeting) {
       reply.status(404).send({ error: 'Meeting not found' });
       return;
     }
@@ -48,10 +48,10 @@ export default async function (fastify) {
       return;
     }
 
-    // if (isTitleTaken) {
-    //   reply.status(409).send({ error: 'Title is already in use' });
-    //   return;
-    // }
+    if (isTitleTaken) {
+      reply.status(409).send({ error: 'Title is already in use' });
+      return;
+    }
 
     const updatedMeeting = await updateMeetingById(meetingId, meetingBody);
 

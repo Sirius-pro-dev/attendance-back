@@ -47,7 +47,7 @@ describe('Meeting API functions', () => {
 
       await getMeetingById(meetingId);
 
-      expect(Meeting.find).toHaveBeenCalled();
+      expect(Meeting.findOne).toHaveBeenCalled();
     });
   });
 

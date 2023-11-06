@@ -17,10 +17,10 @@ export default async function (fastify) {
       return;
     }
 
-    // if (isNameTaken) {
-    //   reply.status(409).send({ error: 'Name is already in use' });
-    //   return;
-    // }
+    if (isNameTaken) {
+      reply.status(409).send({ error: 'Name is already in use' });
+      return;
+    }
 
     createGroup(request.body);
     reply.status(201).send({ message: 'Created' });
@@ -29,7 +29,7 @@ export default async function (fastify) {
     const groupId = request.params.id;
     const group = await getGroupById(groupId);
 
-    if (group.length === 0) {
+    if (!group) {
       reply.status(404).send({ error: 'Group not found' });
       return;
     }
@@ -47,10 +47,10 @@ export default async function (fastify) {
       return;
     }
 
-    // if (isNameTaken) {
-    //   reply.status(409).send({ error: 'Name is already in use' });
-    //   return;
-    // }
+    if (isNameTaken) {
+      reply.status(409).send({ error: 'Name is already in use' });
+      return;
+    }
 
     const updatedGroup = await updateGroupById(groupId, groupBody);
 

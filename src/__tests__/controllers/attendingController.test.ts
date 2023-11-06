@@ -49,7 +49,7 @@ describe('Attending API functions', () => {
 
       await getAttendingById(attendingId);
 
-      expect(Attending.find).toHaveBeenCalled();
+      expect(Attending.findOne).toHaveBeenCalled();
     });
   });
 

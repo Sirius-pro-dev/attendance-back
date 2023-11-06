@@ -1,13 +1,14 @@
-import 'dotenv/config';
 import autoload from '@fastify/autoload';
+import cors from '@fastify/cors';
 import fastifyJwt from '@fastify/jwt';
+import 'dotenv/config';
 import Fastify from 'fastify';
 import path from 'node:path';
 
-import seeds from './seed/seed';
-import { connect } from './connect';
-import { loggerConfig } from './configs/logger';
 import { authenticationConfig } from './configs/authentication';
+import { loggerConfig } from './configs/logger';
+import { connect } from './connect';
+import seeds from './seed/seed';
 import { authenticateToken } from './utils/auth';
 
 const fastify = Fastify({
@@ -19,6 +20,11 @@ fastify.register(fastifyJwt, {
   sign: {
     expiresIn: authenticationConfig.accessExpiresIn
   }
+});
+
+fastify.register(cors, {
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE']
 });
 
 fastify.addHook('onRequest', (request, reply, done) => {

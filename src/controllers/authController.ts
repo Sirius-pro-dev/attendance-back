@@ -1,5 +1,6 @@
 import { authenticationConfig } from '../configs/authentication';
 import User, { UserType } from '../models/user';
+import Role from '../models/role';
 
 export const login = async (data: { email: string; password: string }, fastify) => {
   const checkResult = await checkLoginDetails(data, fastify);
@@ -24,8 +25,10 @@ const checkLoginDetails = async (data, fastify) => {
 };
 
 export const generateRefreshToken = async (user, fastify): Promise<string> => {
+  const role = await Role.findOne({ users: user })
   const newRefreshToken = fastify.jwt.sign(
     { userId: user.userId },
+    { role: role.slug },
     { refreshExpiresIn: authenticationConfig.refreshExpiresIn }
   );
   user.refreshToken = newRefreshToken;
@@ -33,13 +36,19 @@ export const generateRefreshToken = async (user, fastify): Promise<string> => {
   return newRefreshToken;
 };
 
-export const generateAccessToken = (user: UserType, fastify): string => {
-  const accessToken = fastify.jwt.sign({ userId: user.userId }, { expiresIn: authenticationConfig.accessExpiresIn });
+export const generateAccessToken = async (user: UserType, fastify): Promise<string> => {
+  const role = await Role.findOne({ users: user })
+  const accessToken = fastify.jwt.sign(
+    { userId: user.userId },
+    { role: role.slug },
+    { expiresIn: authenticationConfig.accessExpiresIn }
+  );
+
   return accessToken;
 };
 
 export const generateAuthenticationTokens = async (user, fastify) => {
   const newRefreshToken = await generateRefreshToken(user, fastify);
-  const newAccessToken = generateAccessToken(user, fastify);
+  const newAccessToken = await generateAccessToken(user, fastify);
   return { newRefreshToken, newAccessToken };
 };

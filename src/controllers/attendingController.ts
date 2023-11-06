@@ -45,12 +45,6 @@ export const validateAttendingData = attendingData => {
   if (!attendingData.meetingId) {
     errors.meeting = 'Meeting is required';
   }
-  if (!attendingData.userId) {
-    errors.user = 'User is required';
-  }
-  if (!attendingData.joined_at) {
-    errors.joined_at = 'joined_at is required';
-  }
 
   return Object.keys(errors).length === 0 ? null : errors;
 };

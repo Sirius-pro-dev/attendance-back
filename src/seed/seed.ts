@@ -66,16 +66,16 @@ const seed = async fastify => {
       title: 'JS разработка',
       timeFrom: new Date(2023, 9, 22, 18, 30, 0),
       timeTo: new Date(2023, 9, 22, 20, 0, 0),
-      author: teacher,
-      group: group
+      teachers: teacher,
+      groups: [group]
     });
     await meeting1.save();
     const meeting2 = new Meeting({
       title: 'Как писать код красиво',
       timeFrom: new Date(2023, 11, 1, 6, 30, 0),
       timeTo: new Date(2023, 11, 1, 9, 0, 0),
-      author: teacher,
-      group: group
+      teachers: teacher,
+      groups: [group]
     });
     await meeting2.save();
     fastify.log.info('meetings are created');

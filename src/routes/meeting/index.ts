@@ -4,26 +4,30 @@ import {
   getMeetingById,
   updateMeetingById,
   deleteMeetingById,
-  validateMeetingData,
-  isTitleAlreadyInUse
+  validateMeetingData
 } from '../../controllers/meetingController';
+import User from '../../models/user'
+import Group from '../../models/group'
 
 export default async function (fastify) {
   fastify.post('/', async (request, reply) => {
     const validationErrors = validateMeetingData(request.body);
-    const isTitleTaken = await isTitleAlreadyInUse(request.body.title);
 
     if (validationErrors) {
       reply.status(400).send({ error: 'Invalid Data', details: validationErrors });
       return;
     }
 
-    if (isTitleTaken) {
-      reply.status(409).send({ error: 'Title is already in use' });
-      return;
-    }
+    const body = request.body;
+    body.timeFrom = new Date().toISOString();
+    body.teacherIds = body.teacherIds.concat(request.userId);
 
-    createMeeting(request.body);
+    const teachers = await User.find({ userId: body.teacherIds });
+    const groups = await Group.find({ userId: body.groupIds });
+    const teacherIds = teachers.map(teacher => teacher._id);
+    const groupIds = groups.map(group => group._id);
+    createMeeting({ timeFrom: body.timeFrom, teachers: teacherIds, groups: groupIds });
+
     reply.status(201).send({ message: 'Created' });
   });
   fastify.get('/:id', async (request, reply) => {
@@ -41,15 +45,9 @@ export default async function (fastify) {
     const meetingId = request.params.id;
     const meetingBody = request.body;
     const validationErrors = validateMeetingData(meetingBody);
-    const isTitleTaken = await isTitleAlreadyInUse(request.body.title);
 
     if (validationErrors) {
       reply.status(400).send({ error: 'Invalid Data', details: validationErrors });
-      return;
-    }
-
-    if (isTitleTaken) {
-      reply.status(409).send({ error: 'Title is already in use' });
       return;
     }
 

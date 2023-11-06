@@ -52,7 +52,7 @@ export default async function (fastify) {
     }
 
     await generateRefreshToken(user, fastify);
-    const newAccessToken = generateAccessToken(user, fastify);
+    const newAccessToken = await generateAccessToken(user, fastify);
 
     reply.status(200).send({ newAccessToken });
   });

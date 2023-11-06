@@ -6,17 +6,25 @@ import {
   validateAttendingData,
   isUserAlreadyInUse
 } from '../../controllers/attendingController';
+import Meeting from '../../models/meeting'
+import User from '../../models/user'
 
 export default async function (fastify) {
   fastify.post('/', async (request, reply) => {
     const validationErrors = validateAttendingData(request.body);
+
+    const joined_at = new Date().toISOString();
+    const user = await User.findOne({ userId: request.userId });
+    const meeting = await Meeting.findOne({ meetingId: request.body.meetingId});
+    const userId = user._id;
+    const meetingId = meeting._id;
 
     if (validationErrors) {
       reply.status(400).send({ error: 'Invalid Data', details: validationErrors });
       return;
     }
 
-    createAttending(request.body);
+    createAttending({joined_at: joined_at, user: userId, meeting: meetingId});
     reply.status(201).send({ message: 'Created' });
   });
   fastify.get('/:id', async (request, reply) => {

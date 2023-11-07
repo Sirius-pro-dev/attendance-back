@@ -37,7 +37,7 @@ export const generateRefreshToken = async (user, fastify): Promise<string> => {
 };
 
 export const generateAccessToken = async (user: UserType, fastify): Promise<string> => {
-  const role = await Role.findOne({ users: user })
+  const role = await Role.findOne({ users: user }) || await Role.findOne({ slug: 'student' })
   const accessToken = fastify.jwt.sign(
     { userId: user.userId },
     { role: role.slug },

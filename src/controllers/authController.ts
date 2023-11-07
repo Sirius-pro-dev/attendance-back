@@ -25,24 +25,22 @@ const checkLoginDetails = async (data, fastify) => {
 };
 
 export const generateRefreshToken = async (user, fastify): Promise<string> => {
-  const role = await Role.findOne({ users: user })
-  const newRefreshToken = fastify.jwt.sign(
-    { userId: user.userId },
-    { role: role.slug },
-    { refreshExpiresIn: authenticationConfig.refreshExpiresIn }
-  );
+  const newRefreshToken = fastify.jwt.sign({
+    userId: user.userId,
+    refreshExpiresIn: authenticationConfig.refreshExpiresIn
+  });
   user.refreshToken = newRefreshToken;
   await user.save();
   return newRefreshToken;
 };
 
 export const generateAccessToken = async (user: UserType, fastify): Promise<string> => {
-  const role = await Role.findOne({ users: user }) || await Role.findOne({ slug: 'student' })
-  const accessToken = fastify.jwt.sign(
-    { userId: user.userId },
-    { role: role.slug },
-    { expiresIn: authenticationConfig.accessExpiresIn }
-  );
+  const role = (await Role.findOne({ users: user })) || (await Role.findOne({ slug: 'student' }));
+  const accessToken = fastify.jwt.sign({
+    userId: user.userId,
+    role: role.slug || 'student',
+    expiresIn: authenticationConfig.accessExpiresIn
+  });
 
   return accessToken;
 };

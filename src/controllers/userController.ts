@@ -15,14 +15,17 @@ export const createUser = async data => {
 };
 
 export const getAllUsers = async () => {
-  return await User.find({}, { _id: 0, __v: 0 });
+  return await User.find({}, { _id: 0, __v: 0, refreshToken: false, password_hash: false, password: false });
 };
 
-export const getUserById = async id => {
-  return await User.findOne({ userId: id }, { _id: 0, __v: 0 });
+export const getUserById = async (id: string) => {
+  return await User.findOne(
+    { userId: id },
+    { _id: 0, __v: 0, refreshToken: false, password_hash: false, password: false }
+  );
 };
 
-export const updateUserById = async (id, body) => {
+export const updateUserById = async (id: string, body) => {
   const user = await User.findOne({ userId: id });
 
   if (!user) {
@@ -32,7 +35,7 @@ export const updateUserById = async (id, body) => {
   return await User.findByIdAndUpdate(user._id, body, { new: true });
 };
 
-export const deleteUserById = async id => {
+export const deleteUserById = async (id: string) => {
   const user = await User.findOne({ userId: id });
 
   if (!user) {
@@ -70,7 +73,7 @@ export const validateUserData = userData => {
   return Object.keys(errors).length === 0 ? null : errors;
 };
 
-export const isEmailAlreadyInUse = async email => {
+export const isEmailAlreadyInUse = async (email: string) => {
   const user = await User.findOne({ email });
   return !!user;
 };

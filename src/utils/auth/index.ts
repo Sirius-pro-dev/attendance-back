@@ -8,7 +8,7 @@ export const authenticateToken = async (request, reply, done, fastify) => {
     }
 
     const decodedToken = await request.jwtVerify(token);
-    request.userId = decodedToken;
+    request.userId = decodedToken.userId;
     done();
   } catch (error) {
     fastify.log.error(error);

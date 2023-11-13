@@ -45,26 +45,5 @@ export const deleteMeetingById = async id => {
 export const validateMeetingData = meetingData => {
   const errors: Meeting = {};
 
-  if (!meetingData.title) {
-    errors.title = 'Title is required';
-  }
-  if (!meetingData.timeFrom) {
-    errors.timeFrom = 'TimeFrom is required';
-  }
-  if (!meetingData.timeTo) {
-    errors.timeTo = 'TimeTo is required';
-  }
-  // if (!meetingData.author) {
-  //   errors.author = 'Author is required';
-  // }
-  // if (!meetingData.group) {
-  //   errors.group = 'Group is required';
-  // }
-
   return Object.keys(errors).length === 0 ? null : errors;
-};
-
-export const isTitleAlreadyInUse = async title => {
-  const meeting = await Meeting.findOne({ title });
-  return meeting !== null;
 };

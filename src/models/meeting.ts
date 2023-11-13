@@ -5,8 +5,8 @@ const meetingSchema = new mongoose.Schema({
   title: String,
   timeFrom: Date,
   timeTo: Date,
-  author: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Teacher' }],
-  group: { type: mongoose.Schema.Types.ObjectId, ref: 'Group' },
+  teachers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  groups: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Group' }],
   meetingId: {
     type: String,
     default: uuidv4,

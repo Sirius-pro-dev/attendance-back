@@ -16,11 +16,13 @@
 - создание встречи
 - администрирование пользователей у админа
 
-## Стек технологий Backend
+## Стек технологий
 
 - [fastify](https://fastify.dev/)
 - [mongodb](https://www.mongodb.com/)
 - [mongoosejs](https://mongoosejs.com/)
+- [jest](https://jestjs.io/)
+- [typescript](https://www.typescriptlang.org/)
 
 ## Схемы DB
 

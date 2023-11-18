@@ -39,6 +39,14 @@ const seed = async fastify => {
       email: 'valerian_floppa'
     });
     await teacher.save();
+    const admin = new User({
+      firstname: 'Админ',
+      lastname: 'Админ',
+      middlename: null,
+      password: 'admin',
+      email: 'admin'
+    });
+    await admin.save();
     fastify.log.info('users are created');
 
     const student_role = new Role({
@@ -53,6 +61,12 @@ const seed = async fastify => {
       users: [teacher]
     });
     await teacher_role.save();
+    const admin_role = new Role({
+      title: 'Админ',
+      slug: 'admin',
+      users: [admin]
+    });
+    await admin_role.save();
     fastify.log.info('roles are created');
 
     const group = new Group({

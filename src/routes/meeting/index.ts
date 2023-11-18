@@ -28,7 +28,9 @@ export default async function (fastify) {
     const groupIds = groups.map(group => group._id);
     const meeting = await createMeeting({ timeFrom: body.timeFrom, teachers: teacherIds, groups: groupIds });
 
-    reply.status(201).send(meeting);
+    reply.status(201).send({
+      meetingId: meeting.meetingId
+    });
   });
   fastify.get('/:id', async (request, reply) => {
     const meetingId = request.params.id;

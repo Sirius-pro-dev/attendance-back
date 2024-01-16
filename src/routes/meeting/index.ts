@@ -8,6 +8,8 @@ import {
 } from '../../controllers/meetingController';
 import User from '../../models/user'
 import Group from '../../models/group'
+import Attending from '../../models/attending'
+import Role from '../../models/role'
 
 export default async function (fastify) {
   fastify.post('/', async (request, reply) => {
@@ -41,7 +43,24 @@ export default async function (fastify) {
       return;
     }
 
-    reply.status(200).send(meeting);
+    const attendings = await Attending.find({ meeting: meeting._id });
+    const userIds = attendings.map((attending) => { return attending.user })
+    const users = await User.find({ _id: userIds })
+    let users_data = [];
+    for (const user of users) {
+      const groups = await Group.find({ users: user._id });
+      const roles = await Role.find({ users: user._id });
+
+      users_data.push({
+        initials: [user.lastname, user.firstname, user.middlename].join(' '),
+        group: groups[0] ? groups[0].name : '',
+        role: roles[0] ? roles[0].title : ''
+      });
+    }
+
+    reply.status(200).send({
+      users: users_data
+    });
   });
   fastify.put('/:id', async (request, reply) => {
     const meetingId = request.params.id;

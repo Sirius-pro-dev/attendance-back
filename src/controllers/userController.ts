@@ -15,7 +15,7 @@ export const createUser = async data => {
 };
 
 export const getAllUsers = async () => {
-  return await User.find({}, { _id: 0, __v: 0, refreshToken: false, password_hash: false, password: false });
+  return await User.find({}, { __v: 0, refreshToken: false, password_hash: false, password: false });
 };
 
 export const getUserById = async (id: string) => {

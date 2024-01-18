@@ -11,6 +11,7 @@ export default async function (fastify) {
       const roles = await Role.find({ users: user._id });
 
       users_data.push({
+        id: user.userId,
         initials: [user.lastname, user.firstname, user.middlename].join(' '),
         group: groups[0] ? groups[0].name : '',
         role: roles[0] ? roles[0].title : ''
